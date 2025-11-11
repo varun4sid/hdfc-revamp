@@ -1,0 +1,57 @@
+#logo {
+    height: 60px;
+    width: 160px;
+    margin: 5px 15px;
+}
+
+.category {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 15px;
+}
+
+.category > strong {
+    color: white;
+    margin: auto 10px auto 0px;
+    height: 100%;
+}
+
+a {
+    color: rgb(148, 163, 184);
+    margin: auto 5px;
+    text-decoration: none;
+}
+
+.category > a:hover {
+    color: white;
+}
+
+.category > span {
+    color: rgb(148, 163, 184);
+}
+
+hr {
+    color: rgb(30, 41, 59);
+    margin: 20px auto;
+}
+
+.primary-links {
+    font-weight: bold;
+    color: rgb(148, 163, 184);
+    display: flex;
+    margin: 10px auto 10px 10px;
+}
+
+.primary-links > a:hover {
+    color: white;
+}
+
+.footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 16px 0;
+    text-align: center;
+    z-index: 100;
+}
