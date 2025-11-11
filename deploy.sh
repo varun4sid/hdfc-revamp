@@ -1,1 +1,0 @@
-curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_0XM6GqJZjpEliaPC5OhfcuUnZ68S/4moZodLeQX
