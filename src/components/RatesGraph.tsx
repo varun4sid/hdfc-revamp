@@ -1,0 +1,274 @@
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    ReferenceDot,
+} from "recharts";
+import { TrendingUpIcon, TableIcon } from "lucide-react";
+interface RatesGraphProps {
+    isSeniorCitizen: boolean;
+    onViewChange: () => void;
+}
+
+export default function RatesGraph({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isSeniorCitizen,
+    onViewChange,
+}: RatesGraphProps) {
+    // Convert tenure periods to plottable data points
+    const data = [
+        {
+            tenure: 0.67,
+            tenureLabel: "7-29 Days",
+            rate: 3.0,
+        },
+        {
+            tenure: 1.25,
+            tenureLabel: "30-45 Days",
+            rate: 3.5,
+        },
+        {
+            tenure: 2.5,
+            tenureLabel: "61-89 Days",
+            rate: 4.5,
+        },
+        {
+            tenure: 7.5,
+            tenureLabel: "6-9 Months",
+            rate: 5.75,
+        },
+        {
+            tenure: 13.5,
+            tenureLabel: "12-15 Months",
+            rate: 6.6,
+        },
+        {
+            tenure: 16.5,
+            tenureLabel: "15-18 Months",
+            rate: 7.1,
+        },
+        {
+            tenure: 19.5,
+            tenureLabel: "18-21 Months",
+            rate: 7.25,
+        },
+        {
+            tenure: 29,
+            tenureLabel: "24-35 Months",
+            rate: 7.0,
+        },
+        {
+            tenure: 32,
+            tenureLabel: "35-35 Months",
+            rate: 7.35,
+        },
+        {
+            tenure: 45,
+            tenureLabel: "36-55 Months",
+            rate: 7.0,
+        },
+        {
+            tenure: 53,
+            tenureLabel: "55-55 Months",
+            rate: 7.4,
+            isBest: true,
+        },
+        {
+            tenure: 58,
+            tenureLabel: "55-60 Months",
+            rate: 7.0,
+        },
+        {
+            tenure: 90,
+            tenureLabel: "60-120 Months",
+            rate: 7.0,
+        },
+    ];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 shadow-xl">
+                    <p className="text-slate-300 text-sm font-semibold mb-1">
+                        {payload[0].payload.tenureLabel}
+                    </p>
+                    <p className="text-green-400 text-lg font-bold">
+                        {payload[0].value}% p.a.
+                    </p>
+                    {payload[0].payload.isBest && (
+                        <p className="text-xs text-green-400 mt-1">
+                            ⭐ Best Rate
+                        </p>
+                    )}
+                </div>
+            );
+        }
+        return null;
+    };
+    return (
+        <div className="flex w-full min-h-screen justify-center items-start py-12 bg-slate-950">
+            <div className="relative w-full max-w-6xl mx-4">
+                <div className="bg-slate-900 text-slate-50 shadow-2xl border border-slate-700/50 rounded-3xl overflow-hidden">
+                    {/* Header */}
+                    <div className="relative px-8 py-8 bg-slate-800/50 border-b border-slate-700/50">
+                        <div className="flex items-start justify-between">
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-slate-700/50 rounded-2xl border border-slate-600/30">
+                                    <TrendingUpIcon className="w-8 h-8 text-slate-300" />
+                                </div>
+                                <div>
+                                    <h1 className="text-3xl font-bold tracking-tight text-slate-100">
+                                        Interest Rate Trends
+                                    </h1>
+                                    <p className="text-slate-400 text-sm mt-2">
+                                        Visualizing FD rates across different
+                                        tenure periods
+                                    </p>
+                                </div>
+                            </div>
+                            {/* View Toggle Button */}
+                            <button
+                                onClick={onViewChange}
+                                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
+                            >
+                                <TableIcon className="w-4 h-4" />
+                                <span className="text-sm font-medium">
+                                    Table View
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    {/* Graph Section */}
+                    <div className="p-8">
+                        <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
+                            <ResponsiveContainer width="100%" height={500}>
+                                <LineChart
+                                    data={data}
+                                    margin={{
+                                        top: 20,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 60,
+                                    }}
+                                >
+                                    <CartesianGrid
+                                        strokeDasharray="3 3"
+                                        stroke="#334155"
+                                    />
+                                    <XAxis
+                                        dataKey="tenure"
+                                        stroke="#94a3b8"
+                                        label={{
+                                            value: "Tenure (Months)",
+                                            position: "insideBottom",
+                                            offset: -10,
+                                            style: {
+                                                fill: "#94a3b8",
+                                                fontSize: 14,
+                                                fontWeight: 600,
+                                            },
+                                        }}
+                                        tick={{
+                                            fill: "#94a3b8",
+                                            fontSize: 12,
+                                        }}
+                                    />
+                                    <YAxis
+                                        stroke="#94a3b8"
+                                        label={{
+                                            value: "Interest Rate (% p.a.)",
+                                            angle: -90,
+                                            position: "insideLeft",
+                                            style: {
+                                                fill: "#94a3b8",
+                                                fontSize: 14,
+                                                fontWeight: 600,
+                                            },
+                                        }}
+                                        tick={{
+                                            fill: "#94a3b8",
+                                            fontSize: 12,
+                                        }}
+                                        domain={[0, 8]}
+                                    />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Line
+                                        type="stepAfter"
+                                        dataKey="rate"
+                                        stroke="#64748b"
+                                        strokeWidth={3}
+                                        dot={{
+                                            fill: "#64748b",
+                                            r: 5,
+                                        }}
+                                        activeDot={{
+                                            r: 7,
+                                            fill: "#22c55e",
+                                        }}
+                                    />
+                                    {/* Highlight best rate */}
+                                    <ReferenceDot
+                                        x={53}
+                                        y={7.4}
+                                        r={8}
+                                        fill="#22c55e"
+                                        stroke="#16a34a"
+                                        strokeWidth={2}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                        {/* Key Insights */}
+                        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="bg-green-950/40 border border-green-500/30 rounded-xl p-4">
+                                <p className="text-xs text-green-400 font-semibold uppercase tracking-wider mb-2">
+                                    Peak Rate
+                                </p>
+                                <p className="text-2xl font-bold text-green-400">
+                                    7.4%
+                                </p>
+                                <p className="text-xs text-slate-400 mt-1">
+                                    At 55 months tenure
+                                </p>
+                            </div>
+                            <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+                                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">
+                                    Rate Range
+                                </p>
+                                <p className="text-2xl font-bold text-slate-200">
+                                    3.0% - 7.4%
+                                </p>
+                                <p className="text-xs text-slate-400 mt-1">
+                                    Across all tenures
+                                </p>
+                            </div>
+                            <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+                                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">
+                                    Optimal Period
+                                </p>
+                                <p className="text-2xl font-bold text-slate-200">
+                                    4-5 Years
+                                </p>
+                                <p className="text-xs text-slate-400 mt-1">
+                                    For maximum returns
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Footer */}
+                    <div className="px-8 py-6 bg-slate-800/30 border-t border-slate-700/50">
+                        <p className="text-xs text-slate-400 text-center">
+                            Interest rates are subject to change. Please verify
+                            current rates with HDFC Bank before making any
+                            investment decisions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
