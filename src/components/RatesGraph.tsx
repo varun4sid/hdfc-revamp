@@ -12,15 +12,10 @@ import { TrendingUpIcon, TableIcon } from "lucide-react";
 import data from "../db";
 
 interface RatesGraphProps {
-    isSeniorCitizen: boolean;
     onViewChange: () => void;
 }
 
-export default function RatesGraph({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isSeniorCitizen,
-    onViewChange,
-}: RatesGraphProps) {
+export default function RatesGraph({ onViewChange }: RatesGraphProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {

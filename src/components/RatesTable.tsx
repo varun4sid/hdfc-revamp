@@ -13,12 +13,7 @@ export default function RatesTable() {
     const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);
     const [viewMode, setViewMode] = useState<"table" | "graph">("table");
     if (viewMode === "graph") {
-        return (
-            <RatesGraph
-                isSeniorCitizen={isSeniorCitizen}
-                onViewChange={() => setViewMode("table")}
-            />
-        );
+        return <RatesGraph onViewChange={() => setViewMode("table")} />;
     }
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12">
