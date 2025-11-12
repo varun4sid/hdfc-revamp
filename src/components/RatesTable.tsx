@@ -11,7 +11,7 @@ import RatesGraph from "./RatesGraph";
 import data from "../constants/db";
 
 export default function RatesTable() {
-    const [isSeniorCitizen, setIsSeniorCitizen] = useState(true);
+    const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);
     const [viewMode, setViewMode] = useState<"table" | "graph">("table");
     const formatRate = (n: number) => {
         if (Number.isInteger(n)) return n.toFixed(1);
