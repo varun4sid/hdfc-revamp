@@ -8,12 +8,33 @@ import {
 
 import { useState } from "react";
 import RatesGraph from "./RatesGraph";
+import data from "../constants/db";
 
 export default function RatesTable() {
-    const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);
+    const [isSeniorCitizen, setIsSeniorCitizen] = useState(true);
     const [viewMode, setViewMode] = useState<"table" | "graph">("table");
+    const formatRate = (n: number) => {
+        if (Number.isInteger(n)) return n.toFixed(1);
+        if (Math.round(n * 10) === n * 10) return n.toFixed(1);
+        return n.toFixed(2);
+    };
+    // derive display rates based on senior toggle
+    const mapped = data.map((row) => ({
+        ...row,
+        displayRate: isSeniorCitizen ? row.rate.senior : row.rate.regular,
+    }));
+
+    const rates = mapped.map((r) => r.displayRate);
+    const maxRate = Math.max(...rates);
+    const minRate = Math.min(...rates);
+    const bestRow = mapped.find((r) => r.displayRate === maxRate) ?? mapped[0];
     if (viewMode === "graph") {
-        return <RatesGraph onViewChange={() => setViewMode("table")} />;
+        return (
+            <RatesGraph
+                onViewChange={() => setViewMode("table")}
+                isSenior={isSeniorCitizen}
+            />
+        );
     }
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12">
@@ -58,7 +79,7 @@ export default function RatesTable() {
                                         role="switch"
                                         aria-checked={isSeniorCitizen}
                                         onClick={() =>
-                                            setIsSeniorCitizen(!isSeniorCitizen)
+                                            setIsSeniorCitizen((s) => !s)
                                         }
                                         className={`relative inline-flex h-7 w-14 items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-lg ${
                                             isSeniorCitizen
@@ -89,7 +110,7 @@ export default function RatesTable() {
                                     Best Rate
                                 </p>
                                 <p className="text-lg font-bold text-green-400">
-                                    7.4%
+                                    {formatRate(maxRate)}%
                                 </p>
                             </div>
                         </div>
@@ -102,7 +123,7 @@ export default function RatesTable() {
                                     Best Tenure
                                 </p>
                                 <p className="text-lg font-bold text-slate-200">
-                                    55 Months
+                                    {bestRow.tenureLabel}
                                 </p>
                             </div>
                         </div>
@@ -115,7 +136,7 @@ export default function RatesTable() {
                                     Min. Rate
                                 </p>
                                 <p className="text-lg font-bold text-slate-200">
-                                    3.0%
+                                    {formatRate(minRate)}%
                                 </p>
                             </div>
                         </div>
@@ -135,114 +156,47 @@ export default function RatesTable() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-800/50">
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            7 - 29 Days
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            3.0%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            30 - 45 Days
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            3.5%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            61 - 89 Days
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            4.5%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            6 Months 1 Days - 9 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            5.75%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            1 Year - 15 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            6.6%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            15 Months - 18 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.1%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            18 Months - 21 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.25%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            2 Years 1 Day - 2 Year 11 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.0%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            2 Years 11 Months - 35 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.35%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            3 Years 1 Day - 4 Years 7 Months
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.0%
-                                        </td>
-                                    </tr>
-                                    <tr className="relative hover:bg-green-900/30 transition-all duration-200 bg-green-950/40 border-l-4 border-green-500">
-                                        <td className="py-5 pr-6 text-sm font-bold flex items-center gap-2">
-                                            <AwardIcon className="w-4 h-4 text-green-400" />
-                                            4 Year 7 Months - 55 Months
-                                            <span className="ml-2 px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-400 font-semibold">
-                                                BEST RATE
-                                            </span>
-                                        </td>
-                                        <td className="py-5 pl-6 text-lg font-bold text-green-400">
-                                            7.4%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            4 Year 7 Months 1 Day - 5 Years
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.0%
-                                        </td>
-                                    </tr>
-                                    <tr className="hover:bg-slate-800/30 transition-all duration-200">
-                                        <td className="py-4 pr-6 text-sm">
-                                            5 Years 1 Day - 10 Years
-                                        </td>
-                                        <td className="py-4 pl-6 text-sm font-semibold">
-                                            7.0%
-                                        </td>
-                                    </tr>
+                                    {data.map((row) => {
+                                        const rate = isSeniorCitizen
+                                            ? row.rate.senior
+                                            : row.rate.regular;
+                                        if (row.isBest) {
+                                            return (
+                                                <tr
+                                                    key={row.tenure}
+                                                    className="relative hover:bg-green-900/30 transition-all duration-200 bg-green-950/40 border-l-4 border-green-500"
+                                                >
+                                                    <td className="py-5 pr-6 text-sm font-bold flex items-center gap-2">
+                                                        <AwardIcon className="w-4 h-4 text-green-400" />
+                                                        {row.tenureLabel}
+                                                        <span className="ml-2 px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-400 font-semibold">
+                                                            BEST RATE
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-5 pl-6 text-lg font-bold text-green-400">
+                                                        {rate}%
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+
+                                        return (
+                                            <tr
+                                                key={row.tenure}
+                                                className="hover:bg-slate-800/30 transition-all duration-200"
+                                            >
+                                                <td className="py-4 pr-6 text-sm">
+                                                    {row.tenureLabel}
+                                                </td>
+                                                <td className="py-4 pl-6 text-sm font-semibold">
+                                                    {isSeniorCitizen
+                                                        ? row.rate.senior
+                                                        : row.rate.regular}
+                                                    %
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>

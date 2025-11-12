@@ -84,13 +84,13 @@ export function getAmountString(amount: number) {
 export function getResults(
     amount: number,
     rate: number,
-    quarters: number
+    periods: number
 ): {
     maturityAmount: number;
     interestEarned: number;
     growthRate: number;
 } {
-    const maturityAmount = amount * Math.pow(1 + rate / (100 * 4), quarters);
+    const maturityAmount = amount * Math.pow(1 + rate / (100 * 4), periods);
     const interestEarned = maturityAmount - amount;
     const growthRate = (interestEarned / amount) * 100;
 
