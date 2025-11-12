@@ -4,8 +4,16 @@ import {
     CalendarIcon,
     PercentIcon,
 } from "lucide-react";
+import { useState } from "react";
+import { getAmountString } from "../constants/utils";
 
 export default function CalculateReturns() {
+    const [amount, setAmount] = useState(20000);
+
+    function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
+        setAmount(Number(e.target.value));
+    }
+
     return (
         <div
             id="calc"
@@ -33,18 +41,21 @@ export default function CalculateReturns() {
                             </span>
                         </div>
                         <input
-                            type="text"
+                            type="number"
                             id="amount"
                             placeholder="Enter the amount"
                             name="amount"
-                            min="1000"
-                            maxLength={15}
-                            value="20,000"
+                            min={1000}
+                            maxLength={9}
+                            max={100000000}
+                            step={1}
+                            value={amount}
+                            onChange={handleChangeAmount}
                             className="w-full h-12 bg-[#0f172a]/50 border border-[#1e293b] rounded-lg pl-8 pr-3 focus:outline-none focus:ring-1 focus:ring-[#22c55e] focus:border-[#22c55e] transition-all"
                         />
                     </div>
                     <p className="text-xs text-[#94a3b8] pl-1 italic">
-                        Twenty Thousand Rupees Only
+                        {amount > 1000 ? getAmountString(amount) : ""}
                     </p>
                 </div>
                 {/* Tenure Options Section */}
@@ -63,7 +74,6 @@ export default function CalculateReturns() {
                         tabIndex={0}
                         className="grid grid-cols-2 gap-3"
                     >
-                        {/* Option 1 - Selected */}
                         <div className="relative group">
                             <input
                                 type="radio"

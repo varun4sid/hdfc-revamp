@@ -8,7 +8,7 @@ import RatesTable from "./components/RatesTable";
 function App() {
     return (
         <>
-            <div className="container min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950">
+            <div className="container w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950">
                 <div className="column1">
                     <FDCard />
                     <RatesTable />

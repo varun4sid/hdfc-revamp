@@ -8,3 +8,21 @@ body {
         "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
         "Noto Color Emoji";
 }
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* For other browsers, if needed */
+input[type="number"] {
+    appearance: none;
+}

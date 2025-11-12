@@ -9,7 +9,7 @@ import {
     ReferenceDot,
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
-import data from "../db";
+import data from "../constants/db";
 
 interface RatesGraphProps {
     onViewChange: () => void;
