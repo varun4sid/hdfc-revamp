@@ -5,19 +5,17 @@ import {
     PercentIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { getAmountString } from "../constants/utils";
+import { getAmountString, getResults } from "../constants/utils";
 
 type Scheme = {
     id: string;
-    // rates in percentage numbers (e.g. 6.75 means 6.75%)
     rate: {
         regular: number;
         senior: number;
     };
-    // display string
     duration: string;
     // number of quarterly compounding periods for this duration
-    periods: number;
+    quarters: number;
     hasBadge?: boolean;
 };
 
@@ -26,26 +24,26 @@ const SCHEMES: Scheme[] = [
         id: "cmei96vcw000cm07r4ulk6v6w",
         rate: { regular: 6.25, senior: 6.75 },
         duration: "6M 1D",
-        periods: 2,
+        quarters: 2,
     },
     {
         id: "cmei9cck3000em07rzx5zgclk",
         rate: { regular: 6.75, senior: 7.25 },
         duration: "501D",
-        periods: 6,
+        quarters: 6,
         hasBadge: true,
     },
     {
         id: "cmei9fzy700up148zmaomfl30",
         rate: { regular: 6.75, senior: 7.25 },
         duration: "701D",
-        periods: 8,
+        quarters: 8,
     },
     {
         id: "cmei9khci00ur148zdjgea3ro",
         rate: { regular: 6.75, senior: 7.25 },
         duration: "1001D",
-        periods: 11,
+        quarters: 11,
     },
 ];
 
@@ -61,6 +59,12 @@ export default function CalculateReturns() {
     function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
         setAmount(Number(e.target.value));
     }
+
+    const results = getResults(
+        amount,
+        isSenior ? scheme.rate.senior : scheme.rate.regular,
+        scheme.quarters
+    );
 
     return (
         <div
@@ -258,7 +262,7 @@ export default function CalculateReturns() {
                                     ₹
                                 </span>
                                 <span className="text-2xl font-bold text-[#22c55e]">
-                                    20,633
+                                    {results.maturityAmount}
                                 </span>
                             </div>
                         </div>
@@ -271,7 +275,7 @@ export default function CalculateReturns() {
                                     ₹
                                 </span>
                                 <span className="text-2xl font-bold text-[#22c55e]">
-                                    633
+                                    {results.interestEarned}
                                 </span>
                             </div>
                         </div>
@@ -290,7 +294,7 @@ export default function CalculateReturns() {
                             Principal
                         </span>
                         <span className="text-xs text-[#94a3b8]">
-                            +3.2% growth
+                            {results.growthRate.toFixed(2)}% growth
                         </span>
                     </div>
                 </div>
@@ -318,8 +322,8 @@ export default function CalculateReturns() {
                     href="/auth"
                     className="flex h-12 w-full items-center justify-center bg-linear-to-r from-[#22c55e] to-[#16a34a] text-white font-semibold rounded-lg px-4 py-2 transition-all hover:from-[#16a34a] hover:to-[#15803d] shadow-lg shadow-[#22c55e]/20 group"
                 >
-                    Sign Up to Book
-                    <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <span className="text-white">Sign Up to Book</span>
+                    <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 text-white" />
                 </a>
                 <p className="text-center text-xs text-[#94a3b8] mt-3">
                     Secure investment with 100% capital protection

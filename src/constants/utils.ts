@@ -80,3 +80,23 @@ export function getAmountString(amount: number) {
     const result = parts.join(" ").replace(/\s+/g, " ").trim();
     return result ? `${result} Only` : "Zero Only";
 }
+
+export function getResults(
+    amount: number,
+    rate: number,
+    quarters: number
+): {
+    maturityAmount: number;
+    interestEarned: number;
+    growthRate: number;
+} {
+    const maturityAmount = amount * Math.pow(1 + rate / (100 * 4), quarters);
+    const interestEarned = maturityAmount - amount;
+    const growthRate = (interestEarned / amount) * 100;
+
+    return {
+        maturityAmount: parseFloat(maturityAmount.toFixed()),
+        interestEarned: parseFloat(interestEarned.toFixed()),
+        growthRate: parseFloat(growthRate.toFixed(2)),
+    };
+}
