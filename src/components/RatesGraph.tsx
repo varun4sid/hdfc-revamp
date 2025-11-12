@@ -13,9 +13,13 @@ import data from "../constants/db";
 
 interface RatesGraphProps {
     onViewChange: () => void;
+    isSenior: boolean;
 }
 
-export default function RatesGraph({ onViewChange }: RatesGraphProps) {
+export default function RatesGraph({
+    onViewChange,
+    isSenior,
+}: RatesGraphProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
@@ -37,6 +41,21 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
         }
         return null;
     };
+
+    // derive displayRate based on isSenior flag
+    const mapped = data.map((d) => ({
+        ...d,
+        displayRate: isSenior ? d.rate.senior : d.rate.regular,
+    }));
+
+    const displayRates = mapped.map((m) => m.displayRate);
+    const peak = Math.max(...displayRates);
+    const min = Math.min(...displayRates);
+    const bestMapped =
+        mapped.find((m) => m.displayRate === peak) ??
+        mapped.find((m) => m.isBest) ??
+        mapped[0];
+
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12 bg-slate-950">
             <div className="relative w-full max-w-6xl mx-4">
@@ -75,7 +94,7 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
                         <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
                             <ResponsiveContainer width="100%" height={500}>
                                 <LineChart
-                                    data={data}
+                                    data={mapped}
                                     margin={{
                                         top: 20,
                                         right: 30,
@@ -126,7 +145,7 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
                                     <Tooltip content={<CustomTooltip />} />
                                     <Line
                                         type="stepAfter"
-                                        dataKey="rate"
+                                        dataKey="displayRate"
                                         stroke="#64748b"
                                         strokeWidth={3}
                                         dot={{
@@ -138,15 +157,17 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
                                             fill: "#22c55e",
                                         }}
                                     />
-                                    {/* Highlight best rate */}
-                                    <ReferenceDot
-                                        x={53}
-                                        y={7.4}
-                                        r={8}
-                                        fill="#22c55e"
-                                        stroke="#16a34a"
-                                        strokeWidth={2}
-                                    />
+                                    {/* Highlight best rate dynamically */}
+                                    {bestMapped && (
+                                        <ReferenceDot
+                                            x={bestMapped.tenure}
+                                            y={bestMapped.displayRate}
+                                            r={8}
+                                            fill="#22c55e"
+                                            stroke="#16a34a"
+                                            strokeWidth={2}
+                                        />
+                                    )}
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
@@ -157,10 +178,10 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
                                     Peak Rate
                                 </p>
                                 <p className="text-2xl font-bold text-green-400">
-                                    7.4%
+                                    {peak}%
                                 </p>
                                 <p className="text-xs text-slate-400 mt-1">
-                                    At 55 months tenure
+                                    At {bestMapped?.tenureLabel}
                                 </p>
                             </div>
                             <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
@@ -168,7 +189,7 @@ export default function RatesGraph({ onViewChange }: RatesGraphProps) {
                                     Rate Range
                                 </p>
                                 <p className="text-2xl font-bold text-slate-200">
-                                    3.0% - 7.4%
+                                    {min}% - {peak}%
                                 </p>
                                 <p className="text-xs text-slate-400 mt-1">
                                     Across all tenures
