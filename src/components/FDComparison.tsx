@@ -42,7 +42,7 @@ export default function FDComparison() {
                                                 Unity Bank
                                             </span>
                                         </div>
-                                        <div className="absolute -top-2 right-4">
+                                        <div className="absolute -top-0.5 right-4">
                                             <span className="px-3 py-1 bg-linear-to-r from-green-500 to-emerald-500 text-white text-xs font-bold rounded-full shadow-lg">
                                                 RECOMMENDED
                                             </span>

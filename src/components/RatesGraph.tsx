@@ -140,7 +140,7 @@ export default function RatesGraph({
                                             fill: "#94a3b8",
                                             fontSize: 12,
                                         }}
-                                        domain={[0, 8]}
+                                        domain={[2, 8]}
                                     />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Line
