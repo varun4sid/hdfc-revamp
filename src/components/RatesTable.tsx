@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 
 import { useState } from "react";
-// import RatesGraph from "./RatesGraph";
+import RatesGraph from "./RatesGraph";
 import data from "../constants/db";
-import RatesChart from "./RatesChart";
+// import RatesChart from "./RatesChart";
 
 export default function RatesTable() {
     const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);
@@ -31,7 +31,7 @@ export default function RatesTable() {
     const bestRow = mapped.find((r) => r.displayRate === maxRate) ?? mapped[0];
     if (viewMode === "graph") {
         return (
-            <RatesChart
+            <RatesGraph
                 onViewChange={() => setViewMode("table")}
                 isSenior={isSeniorCitizen}
             />

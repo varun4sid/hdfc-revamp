@@ -48,6 +48,34 @@ export default function RatesGraph({
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
     }));
 
+    // compute tenures and consistent ticks for X axis (months)
+    const tenures = mapped.map((m) => m.tenure);
+    const minTenure = Math.min(...tenures);
+    const maxTenure = Math.max(...tenures);
+
+    function generateTicks(min: number, max: number) {
+        const span = max - min;
+        let step = 1;
+        if (span > 72) step = 24;
+        else if (span > 36)
+            step = 16; // prefer 16-month intervals for medium-long spans
+        else if (span > 24) step = 6;
+        else if (span > 12) step = 3;
+
+        const start = Math.ceil(min / step) * step;
+        const end = Math.floor(max / step) * step;
+        const ticks: number[] = [];
+        for (let v = start; v <= end; v += step) ticks.push(v);
+        if (ticks.length === 0) {
+            const a = Math.floor(min);
+            const b = Math.ceil(max);
+            return Array.from(new Set([a, b])).sort((x, y) => x - y);
+        }
+        return ticks;
+    }
+
+    const ticks = generateTicks(minTenure, maxTenure);
+
     const displayRates = mapped.map((m) => m.displayRate);
     const peak = Math.max(...displayRates);
     const min = Math.min(...displayRates);
@@ -108,6 +136,12 @@ export default function RatesGraph({
                                     />
                                     <XAxis
                                         dataKey="tenure"
+                                        type="number"
+                                        domain={[
+                                            Math.floor(minTenure),
+                                            Math.ceil(maxTenure),
+                                        ]}
+                                        ticks={ticks}
                                         stroke="#94a3b8"
                                         label={{
                                             value: "Tenure (Months)",
