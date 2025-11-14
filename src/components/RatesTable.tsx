@@ -32,7 +32,10 @@ export default function RatesTable() {
     if (viewMode === "graph") {
         return (
             <RatesGraph
-                onViewChange={() => setViewMode("table")}
+                onViewChange={() => {
+                    console.log("Switching to table view");
+                    setViewMode("table");
+                }}
                 isSenior={isSeniorCitizen}
             />
         );
@@ -62,7 +65,10 @@ export default function RatesTable() {
                             <div className="flex items-center gap-3">
                                 {/* Graph View Button */}
                                 <button
-                                    onClick={() => setViewMode("graph")}
+                                    onClick={() => {
+                                        console.log("Switching to graph view");
+                                        setViewMode("graph");
+                                    }}
                                     className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
                                 >
                                     <LineChartIcon className="w-4 h-4" />
