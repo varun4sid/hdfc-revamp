@@ -9,6 +9,7 @@ import {
     ReferenceDot,
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
+import type { FC } from "react";
 import data from "../constants/db";
 
 interface RatesGraphProps {
@@ -20,18 +21,29 @@ export default function RatesGraph({
     onViewChange,
     isSenior,
 }: RatesGraphProps) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const CustomTooltip = ({ active, payload }: any) => {
+    type Point = {
+        tenureLabel: string;
+        isBest?: boolean;
+    };
+    interface TooltipRenderProps {
+        active?: boolean;
+        payload?: Array<{ payload: Point; value?: number }>;
+    }
+
+    const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
         if (active && payload && payload.length) {
+            const item = payload[0];
+            const p = item.payload;
+            const value = item.value;
             return (
                 <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 shadow-xl">
                     <p className="text-slate-300 text-sm font-semibold mb-1">
-                        {payload[0].payload.tenureLabel}
+                        {p.tenureLabel}
                     </p>
                     <p className="text-green-400 text-lg font-bold">
-                        {payload[0].value}% p.a.
+                        {value}% p.a.
                     </p>
-                    {payload[0].payload.isBest && (
+                    {p.isBest && (
                         <p className="text-xs text-green-400 mt-1">
                             ⭐ Best Rate
                         </p>
