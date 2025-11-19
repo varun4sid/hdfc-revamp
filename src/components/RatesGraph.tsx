@@ -120,7 +120,7 @@ export default function RatesGraph({
                             {/* View Toggle Button */}
                             <button
                                 onClick={onViewChange}
-                                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
+                                className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
                             >
                                 <TableIcon className="w-4 h-4" />
                                 <span className="text-sm font-medium">
