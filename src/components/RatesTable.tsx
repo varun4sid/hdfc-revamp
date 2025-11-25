@@ -8,19 +8,19 @@ import {
 
 import { useState } from "react";
 import RatesGraph from "./RatesGraph";
-import data from "../constants/db";
-// import RatesChart from "./RatesChart";
+import { CARD, RATES } from "../constants/db";
 
 export default function RatesTable() {
     const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);
     const [viewMode, setViewMode] = useState<"table" | "graph">("table");
+
     const formatRate = (n: number) => {
         if (Number.isInteger(n)) return n.toFixed(1);
         if (Math.round(n * 10) === n * 10) return n.toFixed(1);
         return n.toFixed(2);
     };
-    // derive display rates based on senior toggle
-    const mapped = data.map((row) => ({
+
+    const mapped = RATES.map((row) => ({
         ...row,
         displayRate: isSeniorCitizen ? row.rate.senior : row.rate.regular,
     }));
@@ -54,7 +54,7 @@ export default function RatesTable() {
                                 </div>
                                 <div>
                                     <h1 className="text-3xl font-bold tracking-tight text-slate-100">
-                                        HDFC Bank FD Rates
+                                        {CARD.bankName} FD Rates
                                     </h1>
                                     <p className="text-slate-400 text-sm mt-2">
                                         Competitive interest rates for fixed
@@ -163,7 +163,7 @@ export default function RatesTable() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-800/50">
-                                    {data.map((row) => {
+                                    {RATES.map((row) => {
                                         const rate = isSeniorCitizen
                                             ? row.rate.senior
                                             : row.rate.regular;
@@ -212,7 +212,7 @@ export default function RatesTable() {
                     <div className="px-8 py-6 bg-slate-800/30 border-t border-slate-700/50">
                         <p className="text-xs text-slate-400 text-center">
                             Interest rates are subject to change. Please verify
-                            current rates with HDFC Bank before making any
+                            current rates with {CARD.bankName} before making any
                             investment decisions.
                         </p>
                     </div>

@@ -1,4 +1,4 @@
-const data = [
+export const RATES = [
     {
         tenure: 4.5,
         tenureLabel: "90 days - 6 months",
@@ -68,4 +68,14 @@ const data = [
     },
 ];
 
-export default data;
+export const CARD = {
+    bankName: "HDFC",
+    bankLogo:
+        "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/hdfc.png",
+    features: {
+        interestRates: "3.0% - 7.90%",
+        timePeriod: "7 days - 10 Years",
+        minimumAmount: "₹5,000",
+        compounding: "QUARTERLY",
+    },
+};

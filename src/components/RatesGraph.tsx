@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
 import type { FC } from "react";
-import data from "../constants/db";
+import { CARD, RATES } from "../constants/db";
 
 interface RatesGraphProps {
     onViewChange: () => void;
@@ -55,7 +55,7 @@ export default function RatesGraph({
     };
 
     // derive displayRate based on isSenior flag
-    const mapped = data.map((d) => ({
+    const mapped = RATES.map((d) => ({
         ...d,
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
     }));
@@ -258,7 +258,7 @@ export default function RatesGraph({
                     <div className="px-8 py-6 bg-slate-800/30 border-t border-slate-700/50">
                         <p className="text-xs text-slate-400 text-center">
                             Interest rates are subject to change. Please verify
-                            current rates with HDFC Bank before making any
+                            current rates with {CARD.bankName} before making any
                             investment decisions.
                         </p>
                     </div>
