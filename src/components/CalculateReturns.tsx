@@ -6,7 +6,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { getAmountString, getResults } from "../constants/utils";
-import { SCHEMES, type Scheme } from "../constants/db";
+import { SCHEMES } from "../constants/db";
+import type { Scheme } from "../constants/types";
 
 export default function CalculateReturns() {
     const [amount, setAmount] = useState(20000);

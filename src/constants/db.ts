@@ -1,3 +1,5 @@
+import type { Scheme } from "./types";
+
 export const RATES = [
     {
         tenure: 4.5,
@@ -78,17 +80,6 @@ export const CARD = {
         minimumAmount: "₹5,000",
         compounding: "QUARTERLY",
     },
-};
-
-export type Scheme = {
-    id: number;
-    rate: {
-        regular: number;
-        senior: number;
-    };
-    duration: string;
-    quarters: number;
-    hasBadge?: boolean;
 };
 
 export const SCHEMES: Scheme[] = [

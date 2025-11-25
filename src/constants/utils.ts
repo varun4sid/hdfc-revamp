@@ -1,4 +1,6 @@
-export function getAmountString(amount: number) {
+import type { Yield } from "./types";
+
+export function getAmountString(amount: number): string {
     const num = Math.floor(Math.abs(amount));
     if (num === 0) return "Zero Only";
 
@@ -37,7 +39,7 @@ export function getAmountString(amount: number) {
         "Ninety",
     ];
 
-    function twoDigitsToWords(n: number) {
+    function twoDigitsToWords(n: number): string {
         if (n === 0) return "";
         if (n < 20) return ones[n];
         const t = Math.floor(n / 10);
@@ -85,11 +87,7 @@ export function getResults(
     amount: number,
     rate: number,
     periods: number
-): {
-    maturityAmount: number;
-    interestEarned: number;
-    growthRate: number;
-} {
+): Yield {
     const maturityAmount = amount * Math.pow(1 + rate / (100 * 4), periods);
     const interestEarned = maturityAmount - amount;
     const growthRate = (interestEarned / amount) * 100;
