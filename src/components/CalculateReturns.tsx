@@ -8,39 +8,38 @@ import { useState } from "react";
 import { getAmountString, getResults } from "../constants/utils";
 
 type Scheme = {
-    id: string;
+    id: number;
     rate: {
         regular: number;
         senior: number;
     };
     duration: string;
-    // number of quarterly compounding periods for this duration
     quarters: number;
     hasBadge?: boolean;
 };
 
 const SCHEMES: Scheme[] = [
     {
-        id: "cmei96vcw000cm07r4ulk6v6w",
+        id: 0,
         rate: { regular: 6.25, senior: 6.75 },
         duration: "6M 1D",
         quarters: 2,
     },
     {
-        id: "cmei9cck3000em07rzx5zgclk",
+        id: 1,
         rate: { regular: 6.75, senior: 7.25 },
         duration: "501D",
         quarters: 6,
         hasBadge: true,
     },
     {
-        id: "cmei9fzy700up148zmaomfl30",
+        id: 2,
         rate: { regular: 6.75, senior: 7.25 },
         duration: "701D",
         quarters: 8,
     },
     {
-        id: "cmei9khci00ur148zdjgea3ro",
+        id: 3,
         rate: { regular: 6.75, senior: 7.25 },
         duration: "1001D",
         quarters: 11,
@@ -322,7 +321,7 @@ export default function CalculateReturns() {
                     href="/auth"
                     className="flex h-12 w-full items-center justify-center bg-linear-to-r from-[#22c55e] to-[#16a34a] text-white font-semibold rounded-lg px-4 py-2 transition-all hover:from-[#16a34a] hover:to-[#15803d] shadow-lg shadow-[#22c55e]/20 group"
                 >
-                    <span className="text-white">Sign Up to Book</span>
+                    <span className="text-white">Explore Higher Returns</span>
                     <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 text-white" />
                 </a>
                 <p className="text-center text-xs text-[#94a3b8] mt-3">
