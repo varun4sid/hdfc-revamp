@@ -1,28 +1,40 @@
 @import "tailwindcss";
 
 body {
-    background-color: hsl(222.2 84.4% 4.9%);
+    background: linear-gradient(135deg, #020617 0%, #0f1724 50%, #020617 100%);
     color: white;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
         Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
 }
 
 /* For WebKit browsers (Chrome, Safari, Edge) */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
+    display: none;
 }
 
 /* For Firefox */
 input[type="number"] {
-    appearance: textfield;
     -moz-appearance: textfield;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
-/* For other browsers, if needed */
+/* Extra specificity fallback */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    display: none !important;
+}
+
 input[type="number"] {
-    appearance: none;
+    -moz-appearance: textfield !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
 }

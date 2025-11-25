@@ -6,45 +6,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { getAmountString, getResults } from "../constants/utils";
-
-type Scheme = {
-    id: number;
-    rate: {
-        regular: number;
-        senior: number;
-    };
-    duration: string;
-    quarters: number;
-    hasBadge?: boolean;
-};
-
-const SCHEMES: Scheme[] = [
-    {
-        id: 0,
-        rate: { regular: 6.25, senior: 6.75 },
-        duration: "6M 1D",
-        quarters: 2,
-    },
-    {
-        id: 1,
-        rate: { regular: 6.75, senior: 7.25 },
-        duration: "501D",
-        quarters: 6,
-        hasBadge: true,
-    },
-    {
-        id: 2,
-        rate: { regular: 6.75, senior: 7.25 },
-        duration: "701D",
-        quarters: 8,
-    },
-    {
-        id: 3,
-        rate: { regular: 6.75, senior: 7.25 },
-        duration: "1001D",
-        quarters: 11,
-    },
-];
+import { SCHEMES, type Scheme } from "../constants/db";
 
 export default function CalculateReturns() {
     const [amount, setAmount] = useState(20000);
@@ -68,7 +30,7 @@ export default function CalculateReturns() {
     return (
         <div
             id="calc"
-            className="max-w-md w-full bg-linear-to-b from-[#020817] to-[#0a1023] text-[#f8fafc] rounded-xl shadow-2xl overflow-hidden border border-[#1e293b]"
+            className="max-w-md mt-8 w-full bg-linear-to-b from-[#020817] to-[#0a1023] text-[#f8fafc] rounded-xl shadow-2xl overflow-hidden border border-[#1e293b]"
         >
             <div className="p-6 space-y-6">
                 {/* Investment Amount Section */}

@@ -79,3 +79,42 @@ export const CARD = {
         compounding: "QUARTERLY",
     },
 };
+
+export type Scheme = {
+    id: number;
+    rate: {
+        regular: number;
+        senior: number;
+    };
+    duration: string;
+    quarters: number;
+    hasBadge?: boolean;
+};
+
+export const SCHEMES: Scheme[] = [
+    {
+        id: 0,
+        rate: { regular: 6.25, senior: 6.75 },
+        duration: "6M 1D",
+        quarters: 2,
+    },
+    {
+        id: 1,
+        rate: { regular: 6.75, senior: 7.25 },
+        duration: "501D",
+        quarters: 6,
+        hasBadge: true,
+    },
+    {
+        id: 2,
+        rate: { regular: 6.75, senior: 7.25 },
+        duration: "701D",
+        quarters: 8,
+    },
+    {
+        id: 3,
+        rate: { regular: 6.75, senior: 7.25 },
+        duration: "1001D",
+        quarters: 11,
+    },
+];

@@ -1,17 +1,15 @@
 .container {
-    width: 100%;
     display: grid;
-    margin: 0 auto;
     grid-template-columns: 2fr 1fr;
 }
 
 .column1 {
-    margin: 1vw;
+    margin: 1vh 1vw;
     padding: 10px;
 }
 
 .column2 {
-    margin: 1vw;
+    margin: 1vh 1vw;
     padding: 10px;
 }
 
