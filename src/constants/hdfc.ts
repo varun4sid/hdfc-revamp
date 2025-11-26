@@ -7,7 +7,7 @@ export const CARD = {
     features: {
         interestRates: "3.0% - 7.90%",
         timePeriod: "7 days - 10 Years",
-        minimumAmount: "₹5,000",
+        minimumAmount: 5000,
         compounding: "QUARTERLY",
     },
 };

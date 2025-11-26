@@ -88,6 +88,7 @@ export function getResults(
     rate: number,
     periods: number
 ): Yield {
+    amount = Math.min(amount, 30000000);
     const maturityAmount = amount * Math.pow(1 + rate / (100 * 4), periods);
     const interestEarned = maturityAmount - amount;
     const growthRate = (interestEarned / amount) * 100;

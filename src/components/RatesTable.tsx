@@ -1,4 +1,4 @@
-import { CARD, RATES } from "../constants/db";
+import { CARD, RATES } from "../constants/hdfc";
 
 import {
     TrendingUpIcon,

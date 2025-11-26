@@ -1,4 +1,4 @@
-import { SCHEMES } from "../constants/db";
+import { CARD, SCHEMES } from "../constants/hdfc";
 
 import {
     ArrowRightIcon,
@@ -46,7 +46,7 @@ export default function CalculateReturns() {
                             Investment Amount
                         </label>
                         <span className="text-xs text-[#94a3b8] px-2 py-1 bg-[#1e293b]/50 rounded-full">
-                            Min ₹1,000
+                            Min ₹{CARD.features.minimumAmount}
                         </span>
                     </div>
                     <div className="relative">
@@ -60,18 +60,29 @@ export default function CalculateReturns() {
                             id="amount"
                             placeholder="Enter the amount"
                             name="amount"
-                            min={1000}
+                            min={CARD.features.minimumAmount}
                             maxLength={9}
-                            max={100000000}
+                            max={30000000}
                             step={1}
                             value={amount}
                             onChange={handleChangeAmount}
                             className="w-full h-12 bg-[#0f172a]/50 border border-[#1e293b] rounded-lg pl-8 pr-3 focus:outline-none focus:ring-1 focus:ring-[#22c55e] focus:border-[#22c55e] transition-all"
                         />
                     </div>
-                    <p className="text-xs text-[#94a3b8] pl-1 italic">
-                        {amount > 1000 ? getAmountString(amount) : ""}
-                    </p>
+                    <div className="text-xs text-[#94a3b8] pl-1 italic">
+                        {amount < CARD.features.minimumAmount ? (
+                            <p className="text-red-500">
+                                Min. deposit amount is ₹
+                                {CARD.features.minimumAmount}
+                            </p>
+                        ) : amount > 30000000 ? (
+                            <p className="text-red-500">
+                                Max. deposit amount is ₹3 Crores
+                            </p>
+                        ) : (
+                            <p>{getAmountString(amount)}</p>
+                        )}
+                    </div>
                 </div>
                 {/* Tenure Options Section */}
                 <div className="space-y-3">

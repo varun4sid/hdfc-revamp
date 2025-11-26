@@ -1,4 +1,4 @@
-import { CARD } from "../constants/db";
+import { CARD } from "../constants/hdfc";
 
 import {
     TrendingUpIcon,
