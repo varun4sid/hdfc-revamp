@@ -1,11 +1,11 @@
+import { CARD } from "../constants/db";
+
 import {
     TrendingUpIcon,
     ClockIcon,
     IndianRupeeIcon,
     HistoryIcon,
 } from "lucide-react";
-
-import { CARD } from "../constants/db";
 
 export default function FDCard() {
     const FEATURES = [

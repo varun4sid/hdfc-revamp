@@ -1,3 +1,5 @@
+import { CARD, RATES } from "../constants/db";
+
 import {
     TrendingUpIcon,
     AwardIcon,
@@ -8,7 +10,6 @@ import {
 
 import { useState } from "react";
 import RatesGraph from "./RatesGraph";
-import { CARD, RATES } from "../constants/db";
 
 export default function RatesTable() {
     const [isSeniorCitizen, setIsSeniorCitizen] = useState(false);

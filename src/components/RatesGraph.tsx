@@ -1,3 +1,5 @@
+import { CARD, RATES } from "../constants/db";
+
 import {
     LineChart,
     Line,
@@ -10,7 +12,6 @@ import {
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
 import type { FC } from "react";
-import { CARD, RATES } from "../constants/db";
 
 interface RatesGraphProps {
     onViewChange: () => void;

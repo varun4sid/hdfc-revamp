@@ -1,5 +1,17 @@
 import type { Scheme } from "./types";
 
+export const CARD = {
+    bankName: "HDFC",
+    bankLogo:
+        "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/hdfc.png",
+    features: {
+        interestRates: "3.0% - 7.90%",
+        timePeriod: "7 days - 10 Years",
+        minimumAmount: "₹5,000",
+        compounding: "QUARTERLY",
+    },
+};
+
 export const RATES = [
     {
         tenure: 4.5,
@@ -69,18 +81,6 @@ export const RATES = [
         range: { start: 60, end: 120 },
     },
 ];
-
-export const CARD = {
-    bankName: "HDFC",
-    bankLogo:
-        "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/hdfc.png",
-    features: {
-        interestRates: "3.0% - 7.90%",
-        timePeriod: "7 days - 10 Years",
-        minimumAmount: "₹5,000",
-        compounding: "QUARTERLY",
-    },
-};
 
 export const SCHEMES: Scheme[] = [
     {

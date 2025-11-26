@@ -1,3 +1,5 @@
+import { SCHEMES } from "../constants/db";
+
 import {
     ArrowRightIcon,
     CheckCircleIcon,
@@ -6,7 +8,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { getAmountString, getResults } from "../constants/utils";
-import { SCHEMES } from "../constants/db";
 import type { Scheme } from "../constants/types";
 
 export default function CalculateReturns() {
