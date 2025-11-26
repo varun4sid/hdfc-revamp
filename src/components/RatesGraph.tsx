@@ -8,10 +8,10 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
-    ReferenceDot,
+    ReferenceArea,
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
-import type { FC } from "react";
+import { useState, type FC } from "react";
 
 interface RatesGraphProps {
     onViewChange: () => void;
@@ -23,46 +23,56 @@ export default function RatesGraph({
     isSenior,
 }: RatesGraphProps) {
     type Point = {
+        tenure: number;
         tenureLabel: string;
+        displayRate: number;
         isBest?: boolean;
+        rangeIndex?: number;
     };
+
     interface TooltipRenderProps {
         active?: boolean;
         payload?: Array<{ payload: Point; value?: number }>;
     }
 
-    const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const item = payload[0];
-            const p = item.payload;
-            const value = item.value;
-            return (
-                <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 shadow-xl">
-                    <p className="text-slate-300 text-sm font-semibold mb-1">
-                        {p.tenureLabel}
-                    </p>
-                    <p className="text-green-400 text-lg font-bold">
-                        {value}% p.a.
-                    </p>
-                    {p.isBest && (
-                        <p className="text-xs text-green-400 mt-1">
-                            ⭐ Best Rate
-                        </p>
-                    )}
-                </div>
-            );
-        }
-        return null;
+    // lightweight types used below for various small helpers
+
+    type DotRenderProps = {
+        cx?: number;
+        cy?: number;
+        payload?: Point;
     };
 
-    // derive displayRate based on isSenior flag
-    const mapped = RATES.map((d) => ({
+    // derive displayRate based on isSenior flag and attach a rangeIndex
+    const mappedRanges = RATES.map((d, i) => ({
         ...d,
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
+        rangeIndex: i,
     }));
 
+    // build endpoint points (start and end) for each range so the step chart draws flat segments
+    // we'll hide the start-point marker so the chart appears to make a naked 'L' turn
+    const data: Point[] = mappedRanges
+        .flatMap((r) => [
+            {
+                tenure: r.range.start,
+                tenureLabel: r.tenureLabel,
+                displayRate: r.displayRate,
+                isBest: r.isBest,
+                rangeIndex: r.rangeIndex,
+            },
+            {
+                tenure: r.range.end,
+                tenureLabel: r.tenureLabel,
+                displayRate: r.displayRate,
+                isBest: r.isBest,
+                rangeIndex: r.rangeIndex,
+            },
+        ])
+        .sort((a, b) => a.tenure - b.tenure);
+
     // compute tenures and consistent ticks for X axis (months)
-    const tenures = mapped.map((m) => m.tenure);
+    const tenures = data.map((m) => m.tenure);
     const minTenure = Math.min(...tenures);
     const maxTenure = Math.max(...tenures);
 
@@ -89,17 +99,68 @@ export default function RatesGraph({
 
     const ticks = generateTicks(minTenure, maxTenure);
 
-    const displayRates = mapped.map((m) => m.displayRate);
+    const displayRates = mappedRanges.map((m) => m.displayRate);
     const peak = Math.max(...displayRates);
     const min = Math.min(...displayRates);
-    const bestMapped =
-        mapped.find((m) => m.displayRate === peak) ??
-        mapped.find((m) => m.isBest) ??
-        mapped[0];
+    const bestRange =
+        mappedRanges.find((m) => m.displayRate === peak) ??
+        mappedRanges.find((m) => m.isBest) ??
+        mappedRanges[0];
+
+    // state to track which range is active (hovered)
+    const [activeRange, setActiveRange] = useState<number | null>(null);
+
+    const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
+        // prefer active payload (when hovering near a plotted point)
+        if (active && payload && payload.length) {
+            const item = payload[0];
+            const p = item.payload;
+            const value = item.value;
+            return (
+                <div className="border-slate-700 rounded-lg p-3 shadow-xl">
+                    <p className="text-slate-300 text-sm font-semibold mb-1">
+                        {p.tenureLabel}
+                    </p>
+                    <p className="text-green-400 text-lg font-bold">
+                        {value}% p.a.
+                    </p>
+                    {p.isBest && (
+                        <p className="text-xs text-green-400 mt-1">
+                            ⭐ Best Rate
+                        </p>
+                    )}
+                </div>
+            );
+        }
+
+        // fallback: if user is hovering the line (no active payload) but we have an activeRange, show that
+        if (activeRange !== null && mappedRanges[activeRange]) {
+            const r = mappedRanges[activeRange];
+            return (
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 shadow-xl">
+                    <p className="text-slate-300 text-sm font-semibold mb-1">
+                        {r.tenureLabel}
+                    </p>
+                    <p className="text-green-400 text-lg font-bold">
+                        {r.displayRate}% p.a.
+                    </p>
+                    {r.isBest && (
+                        <p className="text-xs text-green-400 mt-1">
+                            ⭐ Best Rate
+                        </p>
+                    )}
+                </div>
+            );
+        }
+
+        return null;
+    };
+
+    // (mouse handler implemented inline on the chart to match recharts signature)
 
     return (
-        <div className="flex w-full min-h-screen justify-center items-start py-12 bg-slate-950">
-            <div className="relative w-full max-w-6xl mx-4">
+        <div className="flex w-full min-h-screen justify-center items-start py-12">
+            <div className="relative w-full max-w-4xl mx-4">
                 <div className="bg-slate-900 text-slate-50 shadow-2xl border border-slate-700/50 rounded-3xl overflow-hidden">
                     {/* Header */}
                     <div className="relative px-8 py-8 bg-slate-800/50 border-b border-slate-700/50">
@@ -135,13 +196,38 @@ export default function RatesGraph({
                         <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
                             <ResponsiveContainer width="100%" height={500}>
                                 <LineChart
-                                    data={mapped}
+                                    data={data}
                                     margin={{
                                         top: 20,
                                         right: 30,
                                         left: 20,
                                         bottom: 60,
                                     }}
+                                    onMouseMove={(state) => {
+                                        const s = state as
+                                            | {
+                                                  activePayload?: Array<{
+                                                      payload: Point;
+                                                  }>;
+                                              }
+                                            | undefined;
+                                        if (
+                                            s?.activePayload &&
+                                            s.activePayload.length > 0
+                                        ) {
+                                            const payload =
+                                                s.activePayload[0].payload;
+                                            setActiveRange(
+                                                typeof payload.rangeIndex ===
+                                                    "number"
+                                                    ? payload.rangeIndex
+                                                    : null
+                                            );
+                                        } else {
+                                            setActiveRange(null);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setActiveRange(null)}
                                 >
                                     <CartesianGrid
                                         strokeDasharray="3 3"
@@ -166,10 +252,7 @@ export default function RatesGraph({
                                                 fontWeight: 600,
                                             },
                                         }}
-                                        tick={{
-                                            fill: "#94a3b8",
-                                            fontSize: 12,
-                                        }}
+                                        tick={{ fill: "#94a3b8", fontSize: 12 }}
                                     />
                                     <YAxis
                                         stroke="#94a3b8"
@@ -183,41 +266,97 @@ export default function RatesGraph({
                                                 fontWeight: 600,
                                             },
                                         }}
-                                        tick={{
-                                            fill: "#94a3b8",
-                                            fontSize: 12,
-                                        }}
+                                        tick={{ fill: "#94a3b8", fontSize: 12 }}
                                         domain={[2, 8]}
                                     />
-                                    <Tooltip content={<CustomTooltip />} />
+
+                                    {/* single Tooltip with custom content and subtle cursor */}
+                                    <Tooltip
+                                        content={<CustomTooltip />}
+                                        cursor={{
+                                            stroke: "#22c55e",
+                                            strokeWidth: 1,
+                                            opacity: 0.15,
+                                        }}
+                                    />
+
+                                    {/* Best range area (different shade) - render first so hover sits on top */}
+                                    {bestRange && (
+                                        <ReferenceArea
+                                            x1={bestRange.range.start}
+                                            x2={bestRange.range.end}
+                                            strokeOpacity={0}
+                                            fill="#22c55e"
+                                            fillOpacity={0.08}
+                                        />
+                                    )}
+
+                                    {/* main step line. We render a dot only for the range-end points (hide start dots) */}
                                     <Line
                                         type="stepAfter"
                                         dataKey="displayRate"
                                         stroke="#64748b"
                                         strokeWidth={3}
-                                        dot={{
-                                            fill: "#64748b",
-                                            r: 5,
+                                        dot={(dotProps: DotRenderProps) => {
+                                            const p = dotProps.payload;
+                                            if (!p || p.rangeIndex == null)
+                                                return null;
+                                            const r =
+                                                mappedRanges[p.rangeIndex];
+                                            // hide dot for start-of-range points
+                                            if (p.tenure === r.range.start)
+                                                return null;
+                                            return (
+                                                <circle
+                                                    cx={dotProps.cx}
+                                                    cy={dotProps.cy}
+                                                    r={5}
+                                                    fill="#64748b"
+                                                />
+                                            );
                                         }}
-                                        activeDot={{
-                                            r: 7,
-                                            fill: "#22c55e",
+                                        activeDot={(
+                                            dotProps: DotRenderProps
+                                        ) => {
+                                            const p = dotProps.payload;
+                                            if (!p || p.rangeIndex == null)
+                                                return null;
+                                            const r =
+                                                mappedRanges[p.rangeIndex];
+                                            if (p.tenure === r.range.start)
+                                                return null;
+                                            return (
+                                                <circle
+                                                    cx={dotProps.cx}
+                                                    cy={dotProps.cy}
+                                                    r={7}
+                                                    fill="#22c55e"
+                                                />
+                                            );
                                         }}
                                     />
-                                    {/* Highlight best rate dynamically */}
-                                    {bestMapped && (
-                                        <ReferenceDot
-                                            x={bestMapped.tenure}
-                                            y={bestMapped.displayRate}
-                                            r={8}
-                                            fill="#22c55e"
-                                            stroke="#16a34a"
-                                            strokeWidth={2}
-                                        />
-                                    )}
+
+                                    {/* hovered range highlight (on top of best-range) */}
+                                    {activeRange !== null &&
+                                        mappedRanges[activeRange] && (
+                                            <ReferenceArea
+                                                x1={
+                                                    mappedRanges[activeRange]
+                                                        .range.start
+                                                }
+                                                x2={
+                                                    mappedRanges[activeRange]
+                                                        .range.end
+                                                }
+                                                strokeOpacity={0}
+                                                fill="#16a34a"
+                                                fillOpacity={0.06}
+                                            />
+                                        )}
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
+
                         {/* Key Insights */}
                         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="bg-green-950/40 border border-green-500/30 rounded-xl p-4">
@@ -228,9 +367,10 @@ export default function RatesGraph({
                                     {peak}%
                                 </p>
                                 <p className="text-xs text-slate-400 mt-1">
-                                    At {bestMapped?.tenureLabel}
+                                    At {bestRange?.tenureLabel}
                                 </p>
                             </div>
+
                             <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
                                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">
                                     Rate Range
@@ -242,6 +382,7 @@ export default function RatesGraph({
                                     Across all tenures
                                 </p>
                             </div>
+
                             <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
                                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">
                                     Optimal Period
@@ -255,6 +396,7 @@ export default function RatesGraph({
                             </div>
                         </div>
                     </div>
+
                     {/* Footer */}
                     <div className="px-8 py-6 bg-slate-800/30 border-t border-slate-700/50">
                         <p className="text-xs text-slate-400 text-center">

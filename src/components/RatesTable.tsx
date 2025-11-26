@@ -171,7 +171,7 @@ export default function RatesTable() {
                                         if (row.isBest) {
                                             return (
                                                 <tr
-                                                    key={row.tenure}
+                                                    key={row.tenureLabel}
                                                     className="relative hover:bg-green-900/30 transition-all duration-200 bg-green-950/40 border-l-4 border-green-500"
                                                 >
                                                     <td className="py-5 pr-6 text-sm font-bold flex items-center gap-2">
@@ -190,7 +190,7 @@ export default function RatesTable() {
 
                                         return (
                                             <tr
-                                                key={row.tenure}
+                                                key={row.tenureLabel}
                                                 className="hover:bg-slate-800/30 transition-all duration-200"
                                             >
                                                 <td className="py-4 pr-6 text-sm">
