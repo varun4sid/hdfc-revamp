@@ -5,7 +5,7 @@ export const CARD = {
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/axis.png",
     features: {
-        interestRates: "3.0% - 7.35%",
+        interestRates: { min: 3.0, max: 7.35 },
         timePeriod: "7 days - 10 Years",
         minimumAmount: 5000,
         compounding: "QUARTERLY",

@@ -5,7 +5,7 @@ export const CARD = {
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/icici.png",
     features: {
-        interestRates: "2.75% - 7.20%",
+        interestRates: { min: 2.75, max: 7.2 },
         timePeriod: "7 days - 10 Years",
         minimumAmount: 10000,
         compounding: "QUARTERLY",

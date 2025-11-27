@@ -5,7 +5,7 @@ export const CARD = {
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/hdfc.png",
     features: {
-        interestRates: "3.0% - 7.90%",
+        interestRates: { min: 3.0, max: 7.9 },
         timePeriod: "7 days - 10 Years",
         minimumAmount: 5000,
         compounding: "QUARTERLY",
@@ -14,7 +14,22 @@ export const CARD = {
 
 export const RATES = [
     {
-        tenureLabel: "90 days - 6 months",
+        tenureLabel: "7 days - 29 days",
+        rate: { regular: 2.75, senior: 3.25 },
+        range: { start: 0.25, end: 1 },
+    },
+    {
+        tenureLabel: "30 days - 45 days",
+        rate: { regular: 3.25, senior: 3.75 },
+        range: { start: 1, end: 1.5 },
+    },
+    {
+        tenureLabel: "46 days - 90 days",
+        rate: { regular: 4.25, senior: 4.75 },
+        range: { start: 1.5, end: 3 },
+    },
+    {
+        tenureLabel: "3 months - 6 months",
         rate: { regular: 4.25, senior: 4.75 },
         range: { start: 3, end: 6 },
     },
@@ -45,14 +60,9 @@ export const RATES = [
         isBest: true,
     },
     {
-        tenureLabel: "21 months - 24 months",
+        tenureLabel: "21 months - 36 months",
         rate: { regular: 6.45, senior: 6.95 },
-        range: { start: 21, end: 24 },
-    },
-    {
-        tenureLabel: "24 months - 35 months",
-        rate: { regular: 6.45, senior: 6.95 },
-        range: { start: 24, end: 35 },
+        range: { start: 21, end: 36 },
     },
     {
         tenureLabel: "36 months - 55 months",

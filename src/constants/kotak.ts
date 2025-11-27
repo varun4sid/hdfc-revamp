@@ -5,7 +5,7 @@ export const CARD = {
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/kotak.png",
     features: {
-        interestRates: "2.75% - 6.75%",
+        interestRates: { min: 2.75, max: 6.75 },
         timePeriod: "7 days - 10 Years",
         minimumAmount: 5000,
         compounding: "QUARTERLY",

@@ -8,10 +8,14 @@ import {
 } from "lucide-react";
 
 export default function FDCard() {
+    const interestTitle = `${CARD.features.interestRates.min.toFixed(
+        2
+    )}% - ${CARD.features.interestRates.max.toFixed(2)}%`;
+
     const FEATURES = [
         {
             icon: TrendingUpIcon,
-            title: CARD.features.interestRates,
+            title: interestTitle,
             description: "Interest rates",
             gradient: "from-emerald-500 to-green-600",
         },

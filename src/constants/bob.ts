@@ -1,11 +1,11 @@
 import type { Scheme } from "./types";
 
 export const CARD = {
-    bankName: "BOB",
+    bankName: "Bank of Baroda",
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/bob.png",
     features: {
-        interestRates: "3.50% - 7.00%",
+        interestRates: { min: 3.5, max: 7.0 },
         timePeriod: "7 days - 10 Years",
         minimumAmount: 5000,
         compounding: "QUARTERLY",
