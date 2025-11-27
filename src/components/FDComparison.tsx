@@ -6,8 +6,15 @@ import {
 } from "lucide-react";
 
 import "./FDComparison.css";
+import { UNITY as BANK1 } from "../constants/unity";
+import { CARD as BANK2 } from "../constants/hdfc";
 
 export default function FDComparison() {
+    const bank1Max = BANK1.features.interestRates.max;
+    const bank2Max = BANK2.features.interestRates.max;
+    const isBank1Higher = bank1Max > bank2Max;
+    const isBank2Higher = bank2Max > bank1Max;
+    const isTie = bank1Max === bank2Max;
     return (
         <div className="min-h-screen w-full bg-linear-to-br  flex items-start justify-center p-4 sm:p-8">
             <div className="w-full max-w-5xl">
@@ -39,7 +46,7 @@ export default function FDComparison() {
                                         <div className="flex items-center gap-2">
                                             <div className="w-5 h-5 text-green-400" />
                                             <span className="text-sm font-semibold text-slate-200">
-                                                Unity Bank
+                                                {BANK1.bankName} Bank
                                             </span>
                                         </div>
                                         <div className="absolute -top-0.5 right-4">
@@ -52,7 +59,7 @@ export default function FDComparison() {
                                         <div className="flex items-center gap-2">
                                             <div className="w-5 h-5 text-slate-400" />
                                             <span className="text-sm font-semibold text-slate-300">
-                                                HDFC Bank
+                                                {BANK2.bankName} Bank
                                             </span>
                                         </div>
                                     </th>
@@ -65,9 +72,15 @@ export default function FDComparison() {
                                         Interest Rate
                                     </td>
                                     <td className="px-6 py-5">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-2xl font-bold bg-linear-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                                                8.25%
+                                        <div className="flex items-center gap-2 ">
+                                            <span
+                                                className={`${
+                                                    isBank1Higher || isTie
+                                                        ? "text-2xl font-bold bg-linear-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
+                                                        : "text-2xl font-bold text-slate-400"
+                                                }`}
+                                            >
+                                                {bank1Max}%
                                             </span>
                                             <span className="text-sm text-slate-400">
                                                 p.a.
@@ -76,8 +89,14 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-xl font-semibold text-slate-400">
-                                                7.9%
+                                            <span
+                                                className={`${
+                                                    isBank2Higher || isTie
+                                                        ? "text-2xl font-bold bg-linear-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
+                                                        : "text-xl font-semibold text-slate-400"
+                                                }`}
+                                            >
+                                                {bank2Max}%
                                             </span>
                                             <span className="text-sm text-slate-500">
                                                 p.a.
@@ -90,13 +109,13 @@ export default function FDComparison() {
                                         Minimum Deposit
                                     </td>
                                     <td className="px-6 py-5">
-                                        <span className="text-lg font-semibold text-green-400">
-                                            ₹ 1,000
+                                        <span className="text-lg font-semibold text-slate-400">
+                                            ₹ {BANK1.features.minimumAmount}
                                         </span>
                                     </td>
                                     <td className="px-6 py-5">
                                         <span className="text-lg font-medium text-slate-400">
-                                            ₹ 5,000
+                                            ₹ {BANK2.features.minimumAmount}
                                         </span>
                                     </td>
                                 </tr>
@@ -106,18 +125,40 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-400" />
-                                            <span className="text-sm font-medium text-green-400">
-                                                Available
-                                            </span>
+                                            {BANK1.features.instantBooking ? (
+                                                <>
+                                                    <CheckCircleIcon className="w-6 h-6 text-green-400" />
+                                                    <span className="text-sm font-medium text-green-400">
+                                                        Available
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <XCircleIcon className="w-6 h-6 text-red-400" />
+                                                    <span className="text-sm font-medium text-slate-500">
+                                                        Not Available
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            <XCircleIcon className="w-6 h-6 text-red-400" />
-                                            <span className="text-sm font-medium text-slate-500">
-                                                Not Available
-                                            </span>
+                                            {BANK2.features.instantBooking ? (
+                                                <>
+                                                    <CheckCircleIcon className="w-6 h-6 text-green-400" />
+                                                    <span className="text-sm font-medium text-green-400">
+                                                        Available
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <XCircleIcon className="w-6 h-6 text-red-400" />
+                                                    <span className="text-sm font-medium text-slate-500">
+                                                        Not Available
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -127,18 +168,40 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-400" />
-                                            <span className="text-sm font-medium text-green-400">
-                                                Available
-                                            </span>
+                                            {BANK1.features.accountRequired ? (
+                                                <>
+                                                    <CheckCircleIcon className="w-6 h-6 text-green-400" />
+                                                    <span className="text-sm font-medium text-green-400">
+                                                        Available
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <XCircleIcon className="w-6 h-6 text-red-400" />
+                                                    <span className="text-sm font-medium text-slate-500">
+                                                        Not Available
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            <XCircleIcon className="w-6 h-6 text-red-400" />
-                                            <span className="text-sm font-medium text-slate-500">
-                                                Not Available
-                                            </span>
+                                            {BANK2.features.accountRequired ? (
+                                                <>
+                                                    <CheckCircleIcon className="w-6 h-6 text-green-400" />
+                                                    <span className="text-sm font-medium text-green-400">
+                                                        Available
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <XCircleIcon className="w-6 h-6 text-red-400" />
+                                                    <span className="text-sm font-medium text-slate-500">
+                                                        Not Available
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>

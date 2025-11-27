@@ -9,6 +9,8 @@ export const CARD = {
         timePeriod: "7 days - 10 Years",
         minimumAmount: 1000,
         compounding: "QUARTERLY",
+        instantBooking: true,
+        accountRequired: true,
     },
 };
 

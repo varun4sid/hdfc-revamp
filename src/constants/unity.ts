@@ -10,5 +10,7 @@ export const UNITY = {
         timePeriod: "7 days - 10 Years",
         minimumAmount: 5000,
         compounding: "QUARTERLY",
+        instantBooking: true,
+        accountRequired: false,
     },
 };
