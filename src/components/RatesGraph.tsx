@@ -388,7 +388,7 @@ export default function RatesGraph({
                                     Optimal Period
                                 </p>
                                 <p className="text-2xl font-bold text-slate-200">
-                                    18-21 Months
+                                    {bestRange?.tenureLabel}
                                 </p>
                                 <p className="text-xs text-slate-400 mt-1">
                                     For maximum returns
