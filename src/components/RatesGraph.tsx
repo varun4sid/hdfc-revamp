@@ -12,46 +12,23 @@ import {
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
 import { useState, type FC } from "react";
-
-interface RatesGraphProps {
-    onViewChange: () => void;
-    isSenior: boolean;
-}
+import type {
+    DotRenderProps,
+    Point,
+    RatesGraphProps,
+    TooltipRenderProps,
+} from "../constants/types";
 
 export default function RatesGraph({
     onViewChange,
     isSenior,
 }: RatesGraphProps) {
-    type Point = {
-        tenure: number;
-        tenureLabel: string;
-        displayRate: number;
-        isBest?: boolean;
-        rangeIndex?: number;
-    };
-
-    interface TooltipRenderProps {
-        active?: boolean;
-        payload?: Array<{ payload: Point; value?: number }>;
-    }
-
-    // lightweight types used below for various small helpers
-
-    type DotRenderProps = {
-        cx?: number;
-        cy?: number;
-        payload?: Point;
-    };
-
-    // derive displayRate based on isSenior flag and attach a rangeIndex
     const mappedRanges = RATES.map((d, i) => ({
         ...d,
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
         rangeIndex: i,
     }));
 
-    // build endpoint points (start and end) for each range so the step chart draws flat segments
-    // we'll hide the start-point marker so the chart appears to make a naked 'L' turn
     const data: Point[] = mappedRanges
         .flatMap((r) => [
             {
@@ -111,7 +88,6 @@ export default function RatesGraph({
     const [activeRange, setActiveRange] = useState<number | null>(null);
 
     const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
-        // prefer active payload (when hovering near a plotted point)
         if (active && payload && payload.length) {
             const item = payload[0];
             const p = item.payload;
@@ -133,7 +109,6 @@ export default function RatesGraph({
             );
         }
 
-        // fallback: if user is hovering the line (no active payload) but we have an activeRange, show that
         if (activeRange !== null && mappedRanges[activeRange]) {
             const r = mappedRanges[activeRange];
             return (
@@ -155,8 +130,6 @@ export default function RatesGraph({
 
         return null;
     };
-
-    // (mouse handler implemented inline on the chart to match recharts signature)
 
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12">

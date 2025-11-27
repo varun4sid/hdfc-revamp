@@ -29,7 +29,7 @@ export const RATES = [
         range: { start: 1.5, end: 2 },
     },
     {
-        tenureLabel: "61 days - 90 days",
+        tenureLabel: "2 months - 3 months",
         rate: { regular: 4.75, senior: 5.25 },
         range: { start: 2, end: 3 },
     },
