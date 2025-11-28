@@ -18,6 +18,7 @@ export type Yield = {
 export interface RatesGraphProps {
     onViewChange: () => void;
     isSenior: boolean;
+    setIsSenior: (value: boolean) => void;
 }
 
 export interface TooltipRenderProps {

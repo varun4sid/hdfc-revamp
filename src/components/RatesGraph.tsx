@@ -22,6 +22,7 @@ import type {
 export default function RatesGraph({
     onViewChange,
     isSenior,
+    setIsSenior,
 }: RatesGraphProps) {
     const mappedRanges = RATES.map((d, i) => ({
         ...d,
@@ -93,7 +94,7 @@ export default function RatesGraph({
             const p = item.payload;
             const value = item.value;
             return (
-                <div className="border-slate-700 rounded-lg p-3 shadow-xl">
+                <div className="bg-slate-800 border border-slate-400 rounded-lg p-3 shadow-xl">
                     <p className="text-slate-300 text-sm font-semibold mb-1">
                         {p.tenureLabel}
                     </p>
@@ -108,26 +109,6 @@ export default function RatesGraph({
                 </div>
             );
         }
-
-        if (activeRange !== null && mappedRanges[activeRange]) {
-            const r = mappedRanges[activeRange];
-            return (
-                <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 shadow-xl">
-                    <p className="text-slate-300 text-sm font-semibold mb-1">
-                        {r.tenureLabel}
-                    </p>
-                    <p className="text-green-400 text-lg font-bold">
-                        {r.displayRate}% p.a.
-                    </p>
-                    {r.isBest && (
-                        <p className="text-xs text-green-400 mt-1">
-                            ⭐ Best Rate
-                        </p>
-                    )}
-                </div>
-            );
-        }
-
         return null;
     };
 
@@ -153,15 +134,42 @@ export default function RatesGraph({
                                 </div>
                             </div>
                             {/* View Toggle Button */}
-                            <button
-                                onClick={onViewChange}
-                                className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
-                            >
-                                <TableIcon className="w-4 h-4" />
-                                <span className="text-sm font-medium">
-                                    Table View
-                                </span>
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={onViewChange}
+                                    className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors duration-200 border border-slate-600"
+                                >
+                                    <TableIcon className="w-4 h-4" />
+                                    <span className="text-sm font-medium">
+                                        Table View
+                                    </span>
+                                </button>
+                                {/* Toggle Switch */}
+                                <div className="flex flex-col items-end gap-2">
+                                    <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                                        Senior Citizen
+                                    </span>
+                                    <button
+                                        type="button"
+                                        role="switch"
+                                        aria-checked={isSenior}
+                                        onClick={() => setIsSenior(!isSenior)}
+                                        className={`relative inline-flex h-7 w-14 items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-lg ${
+                                            isSenior
+                                                ? "bg-slate-600"
+                                                : "bg-slate-700"
+                                        }`}
+                                    >
+                                        <span
+                                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300 ease-in-out ${
+                                                isSenior
+                                                    ? "translate-x-8"
+                                                    : "translate-x-1"
+                                            }`}
+                                        />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {/* Graph Section */}

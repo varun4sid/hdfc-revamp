@@ -38,6 +38,7 @@ export default function RatesTable() {
                     setViewMode("table");
                 }}
                 isSenior={isSeniorCitizen}
+                setIsSenior={setIsSeniorCitizen}
             />
         );
     }
