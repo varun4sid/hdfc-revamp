@@ -197,6 +197,7 @@ export default function RatesGraph({
                                         }}
                                         tick={{ fill: "#94a3b8", fontSize: 12 }}
                                     />
+
                                     <YAxis
                                         stroke="#94a3b8"
                                         label={{
@@ -228,11 +229,12 @@ export default function RatesGraph({
                                             x2={bestRange.range.end}
                                             strokeOpacity={0}
                                             fill="#22c55e"
-                                            fillOpacity={0.16}
+                                            fillOpacity={0.08}
                                         />
                                     )}
 
                                     <Line
+                                        key={`line-${isSenior ? "sen" : "reg"}`}
                                         type="stepAfter"
                                         dataKey="displayRate"
                                         stroke="#64748b"
@@ -274,31 +276,33 @@ export default function RatesGraph({
                                                 />
                                             );
                                         }}
-                                        animationDuration={1000}
+                                        animationDuration={2000}
                                         onAnimationEnd={() =>
                                             setShowHighlight(true)
                                         }
                                     />
 
-                                    {showHighlight && (
-                                        <Line
-                                            data={data.map((d) => ({
-                                                ...d,
-                                                displayRate:
-                                                    d.displayRate === peak
-                                                        ? d.displayRate
-                                                        : null,
-                                            }))}
-                                            type="stepAfter"
-                                            dataKey={"displayRate"}
-                                            stroke="#22c55e"
-                                            strokeWidth={3}
-                                            dot={false}
-                                            activeDot={false}
-                                            isAnimationActive={showHighlight}
-                                            animationBegin={1000}
-                                        />
-                                    )}
+                                    <Line
+                                        // force remount when highlighting target changes
+                                        key={`highlight-${
+                                            isSenior ? "sen" : "reg"
+                                        }-${peak}`}
+                                        data={data.map((d) => ({
+                                            ...d,
+                                            displayRate:
+                                                d.displayRate === peak
+                                                    ? d.displayRate
+                                                    : null,
+                                        }))}
+                                        type="stepAfter"
+                                        dataKey={"displayRate"}
+                                        stroke="#22c55e"
+                                        strokeWidth={3}
+                                        dot={false}
+                                        activeDot={false}
+                                        isAnimationActive={showHighlight}
+                                        animationBegin={2000}
+                                    />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
