@@ -1,4 +1,4 @@
-import { CARD, RATES } from "../constants/hdfc";
+import { CARD, RATES } from "../constants/sbi";
 
 import {
     LineChart,
@@ -24,6 +24,8 @@ export default function RatesGraph({
     isSenior,
     setIsSenior,
 }: RatesGraphProps) {
+    const [showHighlight, setShowHighlight] = useState(false);
+
     const mappedRanges = RATES.map((d, i) => ({
         ...d,
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
@@ -54,27 +56,6 @@ export default function RatesGraph({
     const minTenure = Math.min(...tenures);
     const maxTenure = Math.max(...tenures);
 
-    function generateTicks(min: number, max: number) {
-        const span = max - min;
-        let step = 1;
-        if (span > 72) step = 24;
-        else if (span > 36)
-            step = 16; // prefer 16-month intervals for medium-long spans
-        else if (span > 24) step = 6;
-        else if (span > 12) step = 3;
-
-        const start = Math.ceil(min / step) * step;
-        const end = Math.floor(max / step) * step;
-        const ticks: number[] = [];
-        for (let v = start; v <= end; v += step) ticks.push(v);
-        if (ticks.length === 0) {
-            const a = Math.floor(min);
-            const b = Math.ceil(max);
-            return Array.from(new Set([a, b])).sort((x, y) => x - y);
-        }
-        return ticks;
-    }
-
     const ticks = generateTicks(minTenure, maxTenure);
 
     const displayRates = mappedRanges.map((m) => m.displayRate);
@@ -82,35 +63,7 @@ export default function RatesGraph({
     const min = Math.min(...displayRates);
     const bestRange =
         mappedRanges.find((m) => m.displayRate === peak) ??
-        mappedRanges.find((m) => m.isBest) ??
-        mappedRanges[0];
-
-    // state to track which range is active (hovered)
-    const [activeRange, setActiveRange] = useState<number | null>(null);
-
-    const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const item = payload[0];
-            const p = item.payload;
-            const value = item.value;
-            return (
-                <div className="bg-slate-800 border border-slate-400 rounded-lg p-3 shadow-xl">
-                    <p className="text-slate-300 text-sm font-semibold mb-1">
-                        {p.tenureLabel}
-                    </p>
-                    <p className="text-green-400 text-lg font-bold">
-                        {value}% p.a.
-                    </p>
-                    {p.isBest && (
-                        <p className="text-xs text-green-400 mt-1">
-                            ⭐ Best Rate
-                        </p>
-                    )}
-                </div>
-            );
-        }
-        return null;
-    };
+        mappedRanges.find((m) => m.isBest);
 
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12">
@@ -153,7 +106,10 @@ export default function RatesGraph({
                                         type="button"
                                         role="switch"
                                         aria-checked={isSenior}
-                                        onClick={() => setIsSenior(!isSenior)}
+                                        onClick={() => {
+                                            setShowHighlight(false);
+                                            setIsSenior(!isSenior);
+                                        }}
                                         className={`relative inline-flex h-7 w-14 items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-lg ${
                                             isSenior
                                                 ? "bg-slate-600"
@@ -184,31 +140,6 @@ export default function RatesGraph({
                                         left: 20,
                                         bottom: 60,
                                     }}
-                                    onMouseMove={(state) => {
-                                        const s = state as
-                                            | {
-                                                  activePayload?: Array<{
-                                                      payload: Point;
-                                                  }>;
-                                              }
-                                            | undefined;
-                                        if (
-                                            s?.activePayload &&
-                                            s.activePayload.length > 0
-                                        ) {
-                                            const payload =
-                                                s.activePayload[0].payload;
-                                            setActiveRange(
-                                                typeof payload.rangeIndex ===
-                                                    "number"
-                                                    ? payload.rangeIndex
-                                                    : null
-                                            );
-                                        } else {
-                                            setActiveRange(null);
-                                        }
-                                    }}
-                                    onMouseLeave={() => setActiveRange(null)}
                                 >
                                     <CartesianGrid
                                         strokeDasharray="3 3"
@@ -251,28 +182,25 @@ export default function RatesGraph({
                                         domain={[2, 8]}
                                     />
 
-                                    {/* single Tooltip with custom content and subtle cursor */}
                                     <Tooltip
                                         content={<CustomTooltip />}
                                         cursor={{
                                             stroke: "#22c55e",
                                             strokeWidth: 1,
-                                            opacity: 0.15,
+                                            opacity: 0.2,
                                         }}
                                     />
 
-                                    {/* Best range area (different shade) - render first so hover sits on top */}
                                     {bestRange && (
                                         <ReferenceArea
                                             x1={bestRange.range.start}
                                             x2={bestRange.range.end}
                                             strokeOpacity={0}
                                             fill="#22c55e"
-                                            fillOpacity={0.08}
+                                            fillOpacity={0.16}
                                         />
                                     )}
 
-                                    {/* main step line. We render a dot only for the range-end points (hide start dots) */}
                                     <Line
                                         type="stepAfter"
                                         dataKey="displayRate"
@@ -315,25 +243,31 @@ export default function RatesGraph({
                                                 />
                                             );
                                         }}
+                                        animationDuration={1000}
+                                        onAnimationEnd={() =>
+                                            setShowHighlight(true)
+                                        }
                                     />
 
-                                    {/* hovered range highlight (on top of best-range) */}
-                                    {activeRange !== null &&
-                                        mappedRanges[activeRange] && (
-                                            <ReferenceArea
-                                                x1={
-                                                    mappedRanges[activeRange]
-                                                        .range.start
-                                                }
-                                                x2={
-                                                    mappedRanges[activeRange]
-                                                        .range.end
-                                                }
-                                                strokeOpacity={0}
-                                                fill="#16a34a"
-                                                fillOpacity={0.06}
-                                            />
-                                        )}
+                                    {showHighlight && (
+                                        <Line
+                                            data={data.map((d) => ({
+                                                ...d,
+                                                displayRate:
+                                                    d.displayRate === peak
+                                                        ? d.displayRate
+                                                        : null,
+                                            }))}
+                                            type="stepAfter"
+                                            dataKey={"displayRate"}
+                                            stroke="#22c55e"
+                                            strokeWidth={3}
+                                            dot={false}
+                                            activeDot={false}
+                                            isAnimationActive={showHighlight}
+                                            animationBegin={1000}
+                                        />
+                                    )}
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
@@ -391,3 +325,46 @@ export default function RatesGraph({
         </div>
     );
 }
+
+function generateTicks(min: number, max: number) {
+    const span = max - min;
+    let step = 1;
+    if (span > 72) step = 24;
+    else if (span > 36)
+        step = 16; // prefer 16-month intervals for medium-long spans
+    else if (span > 24) step = 6;
+    else if (span > 12) step = 3;
+
+    const start = Math.ceil(min / step) * step;
+    const end = Math.floor(max / step) * step;
+    const ticks: number[] = [];
+    for (let v = start; v <= end; v += step) ticks.push(v);
+    if (ticks.length === 0) {
+        const a = Math.floor(min);
+        const b = Math.ceil(max);
+        return Array.from(new Set([a, b])).sort((x, y) => x - y);
+    }
+    return ticks;
+}
+
+const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const item = payload[0];
+        const p = item.payload;
+        const value = item.value;
+        return (
+            <div className="bg-slate-800 border border-slate-400 rounded-lg p-3 shadow-xl">
+                <p className="text-slate-300 text-sm font-semibold mb-1">
+                    {p.tenureLabel}
+                </p>
+                <p className="text-green-400 text-lg font-bold">
+                    {value}% p.a.
+                </p>
+                {p.isBest && (
+                    <p className="text-xs text-green-400 mt-1">⭐ Best Rate</p>
+                )}
+            </div>
+        );
+    }
+    return null;
+};
