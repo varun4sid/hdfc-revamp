@@ -65,6 +65,37 @@ export default function RatesGraph({
         mappedRanges.find((m) => m.displayRate === peak) ??
         mappedRanges.find((m) => m.isBest);
 
+    const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            const item = payload[0];
+            const p = item.payload;
+            const value = item.value;
+            return (
+                <div className="bg-slate-800 border border-slate-400 rounded-lg p-3 shadow-xl">
+                    <p className="text-slate-300 text-sm font-semibold mb-1">
+                        {p.tenureLabel}
+                    </p>
+                    <p className="text-green-400 text-lg font-bold">
+                        {value}% p.a.
+                    </p>
+                    {(() => {
+                        const isCurrentBest =
+                            p.rangeIndex === bestRange?.rangeIndex ||
+                            p.displayRate === peak;
+                        return (
+                            isCurrentBest && (
+                                <p className="text-xs text-green-400 mt-1">
+                                    ⭐ Best Rate
+                                </p>
+                            )
+                        );
+                    })()}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className="flex w-full min-h-screen justify-center items-start py-12">
             <div className="relative w-full max-w-4xl mx-4">
@@ -346,25 +377,3 @@ function generateTicks(min: number, max: number) {
     }
     return ticks;
 }
-
-const CustomTooltip: FC<TooltipRenderProps> = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-        const item = payload[0];
-        const p = item.payload;
-        const value = item.value;
-        return (
-            <div className="bg-slate-800 border border-slate-400 rounded-lg p-3 shadow-xl">
-                <p className="text-slate-300 text-sm font-semibold mb-1">
-                    {p.tenureLabel}
-                </p>
-                <p className="text-green-400 text-lg font-bold">
-                    {value}% p.a.
-                </p>
-                {p.isBest && (
-                    <p className="text-xs text-green-400 mt-1">⭐ Best Rate</p>
-                )}
-            </div>
-        );
-    }
-    return null;
-};
