@@ -8,7 +8,6 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
-    ReferenceArea,
 } from "recharts";
 import { TrendingUpIcon, TableIcon } from "lucide-react";
 import { useState, type FC } from "react";
@@ -222,16 +221,6 @@ export default function RatesGraph({
                                             opacity: 0.2,
                                         }}
                                     />
-
-                                    {bestRange && (
-                                        <ReferenceArea
-                                            x1={bestRange.range.start}
-                                            x2={bestRange.range.end}
-                                            strokeOpacity={0}
-                                            fill="#22c55e"
-                                            fillOpacity={0.08}
-                                        />
-                                    )}
 
                                     <Line
                                         key={`line-${isSenior ? "sen" : "reg"}`}
