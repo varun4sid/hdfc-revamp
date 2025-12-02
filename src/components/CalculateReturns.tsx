@@ -1,4 +1,5 @@
 import { CARD, SCHEMES } from "../constants/hdfc";
+import { SCHEMES as SURYODAY } from "../constants/suryoday";
 
 import {
     ArrowRightIcon,
@@ -27,6 +28,14 @@ export default function CalculateReturns() {
         amount,
         isSenior ? scheme.rate.senior : scheme.rate.regular,
         scheme.quarters
+    );
+
+    const suryoday = getResults(
+        amount,
+        isSenior
+            ? SURYODAY[scheme.id].rate.senior
+            : SURYODAY[scheme.id].rate.regular,
+        SURYODAY[scheme.id].quarters
     );
 
     return (
@@ -160,38 +169,6 @@ export default function CalculateReturns() {
                 </div>
                 {/* Options Section */}
                 <div className="space-y-4 bg-[#0f172a]/30 p-4 rounded-lg border border-[#1e293b]">
-                    <div className="flex items-center justify-between gap-3">
-                        <label
-                            htmlFor="at-maturity"
-                            className="text-sm font-medium whitespace-nowrap flex items-center"
-                        >
-                            <span className="w-2 h-2 bg-[#22c55e] rounded-full mr-2"></span>
-                            Action at Maturity
-                        </label>
-                        <select
-                            id="at-maturity"
-                            className="flex-1 h-10 bg-[#0f172a] border border-[#1e293b] rounded-lg px-3 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#22c55e] transition-all"
-                        >
-                            <option value="payout">Payout</option>
-                        </select>
-                    </div>
-                    <div className="flex items-center justify-between gap-3">
-                        <label
-                            htmlFor="interest-payout-frequency"
-                            className="text-sm font-medium whitespace-nowrap flex items-center"
-                        >
-                            <span className="w-2 h-2 bg-[#22c55e] rounded-full mr-2"></span>
-                            Interest Payout
-                        </label>
-                        <select
-                            id="interest-payout-frequency"
-                            className="flex-1 h-10 bg-[#0f172a] border border-[#1e293b] rounded-lg px-3 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#22c55e] transition-all"
-                        >
-                            <option value="maturity">Maturity</option>
-                            <option value="quarterly">Quarterly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
                     {/* Senior Citizen Toggle */}
                     <div className="flex items-center py-1">
                         <button
@@ -236,7 +213,9 @@ export default function CalculateReturns() {
                                     ₹
                                 </span>
                                 <span className="text-2xl font-bold text-[#22c55e]">
-                                    {results.maturityAmount}
+                                    {results.maturityAmount.toLocaleString(
+                                        "en-IN"
+                                    )}
                                 </span>
                             </div>
                         </div>
@@ -249,7 +228,9 @@ export default function CalculateReturns() {
                                     ₹
                                 </span>
                                 <span className="text-2xl font-bold text-[#22c55e]">
-                                    {results.interestEarned}
+                                    {results.interestEarned.toLocaleString(
+                                        "en-IN"
+                                    )}
                                 </span>
                             </div>
                         </div>
@@ -259,7 +240,7 @@ export default function CalculateReturns() {
                         <div
                             className="h-full bg-[#22c55e] rounded-full"
                             style={{
-                                width: "3.2%",
+                                width: `${results.growthRate.toFixed(2)}%`,
                             }}
                         ></div>
                     </div>
@@ -267,28 +248,80 @@ export default function CalculateReturns() {
                         <span className="text-xs text-[#94a3b8]">
                             Principal
                         </span>
-                        <span className="text-xs text-[#94a3b8]">
-                            {results.growthRate.toFixed(2)}% growth
-                        </span>
+                        {results.growthRate > 0 ? (
+                            <span className="text-xs text-[#94a3b8]">
+                                <span className="text-[#22c55e]">
+                                    {results.growthRate.toFixed(2)}%
+                                </span>
+                                {` growth`}
+                            </span>
+                        ) : (
+                            <span></span>
+                        )}
                     </div>
                 </div>
-            </div>
-            {/* Hidden inputs for form data */}
-            <div className="sr-only">
-                <input
-                    type="hidden"
-                    name="fdId"
-                    value="cmc8w1is3001lc8w0uqrdu542"
-                />
-                <input
-                    type="hidden"
-                    name="tenureNonCumulativeId"
-                    value={scheme?.id}
-                />
-                <input type="hidden" name="atMaturity" value="payout" />
-                <input type="hidden" name="isOnboard" value="undefined" />
-                <input type="hidden" name="actionOnMaturity" value="Payout" />
-                <input type="hidden" name="isSenior" value={String(isSenior)} />
+                {/*Suryoday Returns*/}
+                <div className="bg-linear-to-r from-[#0f172a]/80 to-[#0f172a]/60 rounded-lg border border-[#1e293b] p-4">
+                    <div className="text-xs uppercase tracking-wider text-[#94a3b8] mb-3 font-medium">
+                        Suryoday Returns
+                    </div>
+                    <div className="flex justify-between">
+                        <div className="space-y-1">
+                            <div className="text-xs text-[#94a3b8]">
+                                Maturity Amount
+                            </div>
+                            <div className="flex items-baseline">
+                                <span className="text-sm mr-1 text-[#94a3b8]">
+                                    ₹
+                                </span>
+                                <span className="text-2xl font-bold text-[#f97316]">
+                                    {suryoday.maturityAmount.toLocaleString(
+                                        "en-IN"
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="space-y-1">
+                            <div className="text-xs text-[#94a3b8]">
+                                Total Gains
+                            </div>
+                            <div className="flex items-baseline">
+                                <span className="text-sm mr-1 text-[#94a3b8]">
+                                    ₹
+                                </span>
+                                <span className="text-2xl font-bold text-[#f97316]">
+                                    {suryoday.interestEarned.toLocaleString(
+                                        "en-IN"
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Visual indicator */}
+                    <div className="mt-3 h-1.5 w-full bg-[#1e293b] rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-[#f97316] rounded-full"
+                            style={{
+                                width: `${suryoday.growthRate.toFixed(2)}%`,
+                            }}
+                        ></div>
+                    </div>
+                    <div className="flex justify-between mt-1">
+                        <span className="text-xs text-[#94a3b8]">
+                            Principal
+                        </span>
+                        {suryoday.growthRate > 0 ? (
+                            <span className="text-xs text-[#94a3b8]">
+                                <span className="text-[#f97316]">
+                                    {suryoday.growthRate.toFixed(2)}%
+                                </span>
+                                {` growth`}
+                            </span>
+                        ) : (
+                            <span></span>
+                        )}
+                    </div>
+                </div>
             </div>
             {/* CTA Button */}
             <div className="px-6 py-6 border-t border-[#1e293b]">

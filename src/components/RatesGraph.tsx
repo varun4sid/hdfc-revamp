@@ -284,7 +284,7 @@ export default function RatesGraph({
                                                     : null,
                                         }))}
                                         type="stepAfter"
-                                        dataKey={"displayRate"}
+                                        dataKey="displayRate"
                                         stroke="#22c55e"
                                         strokeWidth={3}
                                         dot={false}
