@@ -1,5 +1,5 @@
-import { CARD, SCHEMES } from "../constants/hdfc";
-import { SCHEMES as SURYODAY } from "../constants/suryoday";
+import { HDFC as BANK } from "../constants/hdfc";
+import { SURYODAY } from "../constants/suryoday";
 
 import {
     ArrowRightIcon,
@@ -12,6 +12,8 @@ import { getAmountString, getResults } from "../constants/utils";
 import type { Scheme } from "../constants/types";
 
 export default function CalculateReturns() {
+    const SCHEMES = BANK.SCHEMES;
+    const CARD = BANK.CARD;
     const [amount, setAmount] = useState(20000);
     const [scheme, setScheme] = useState<Scheme>(SCHEMES[0]);
     const [isSenior, setIsSenior] = useState<boolean>(false);
@@ -33,9 +35,9 @@ export default function CalculateReturns() {
     const suryoday = getResults(
         amount,
         isSenior
-            ? SURYODAY[scheme.id].rate.senior
-            : SURYODAY[scheme.id].rate.regular,
-        SURYODAY[scheme.id].quarters
+            ? SURYODAY.SCHEMES[scheme.id].rate.senior
+            : SURYODAY.SCHEMES[scheme.id].rate.regular,
+        SURYODAY.SCHEMES[scheme.id].quarters
     );
 
     return (
@@ -260,7 +262,7 @@ export default function CalculateReturns() {
                         )}
                     </div>
                 </div>
-                {/*Suryoday Returns*/}
+                {/*Compare Returns*/}
                 <div className="bg-linear-to-r from-[#0f172a]/80 to-[#0f172a]/60 rounded-lg border border-[#1e293b] p-4">
                     <div className="text-xs uppercase tracking-wider text-[#94a3b8] mb-3 font-medium">
                         Suryoday Returns

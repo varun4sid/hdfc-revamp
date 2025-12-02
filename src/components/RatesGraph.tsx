@@ -1,4 +1,4 @@
-import { CARD, RATES } from "../constants/sbi";
+import { SBI as BANK } from "../constants/sbi";
 
 import {
     LineChart,
@@ -25,7 +25,7 @@ export default function RatesGraph({
 }: RatesGraphProps) {
     const [showHighlight, setShowHighlight] = useState(false);
 
-    const mappedRanges = RATES.map((d, i) => ({
+    const mappedRanges = BANK.RATES.map((d, i) => ({
         ...d,
         displayRate: isSenior ? d.rate.senior : d.rate.regular,
         rangeIndex: i,
@@ -340,8 +340,8 @@ export default function RatesGraph({
                     <div className="px-8 py-6 bg-slate-800/30 border-t border-slate-700/50">
                         <p className="text-xs text-slate-400 text-center">
                             Interest rates are subject to change. Please verify
-                            current rates with {CARD.bankName} before making any
-                            investment decisions.
+                            current rates with {BANK.CARD.bankName} before
+                            making any investment decisions.
                         </p>
                     </div>
                 </div>

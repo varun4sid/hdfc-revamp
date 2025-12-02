@@ -1,4 +1,4 @@
-import { CARD } from "../constants/hdfc";
+import { HDFC } from "../constants/hdfc";
 
 import {
     TrendingUpIcon,
@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 
 export default function FDCard() {
+    const CARD = HDFC.CARD;
+
     const interestTitle = `${CARD.features.interestRates.min.toFixed(
         2
     )}% - ${CARD.features.interestRates.max.toFixed(2)}%`;

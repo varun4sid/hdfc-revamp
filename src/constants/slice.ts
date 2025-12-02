@@ -1,6 +1,6 @@
 import type { Scheme } from "./types";
 
-export const CARD = {
+const CARD = {
     bankName: "Slice",
     bankLogo:
         "https://bhihtsmosmghzjnmhufc.supabase.co/storage/v1/object/public/superfd-images/bank-logos/slice.png",
@@ -14,7 +14,7 @@ export const CARD = {
     },
 };
 
-export const RATES = [
+const RATES = [
     {
         tenureLabel: "7 days - 29 days",
         rate: { regular: 3.5, senior: 3.75 },
@@ -68,7 +68,7 @@ export const RATES = [
     },
 ];
 
-export const SCHEMES: Scheme[] = [
+const SCHEMES: Scheme[] = [
     {
         id: 0,
         rate: { regular: 7.25, senior: 7.25 },
@@ -95,3 +95,7 @@ export const SCHEMES: Scheme[] = [
         quarters: 20,
     },
 ];
+
+const SLICE = { CARD, RATES, SCHEMES };
+
+export { SLICE };

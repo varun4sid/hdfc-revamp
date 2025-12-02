@@ -7,11 +7,11 @@ import {
 
 import "./FDComparison.css";
 import { UNITY as BANK1 } from "../constants/unity";
-import { CARD as BANK2 } from "../constants/hdfc";
+import { HDFC as BANK2 } from "../constants/hdfc";
 
 export default function FDComparison() {
-    const bank1Max = BANK1.features.interestRates.max;
-    const bank2Max = BANK2.features.interestRates.max;
+    const bank1Max = BANK1.CARD.features.interestRates.max;
+    const bank2Max = BANK2.CARD.features.interestRates.max;
     const isBank1Higher = bank1Max > bank2Max;
     const isBank2Higher = bank2Max > bank1Max;
     const isTie = bank1Max === bank2Max;
@@ -46,7 +46,7 @@ export default function FDComparison() {
                                         <div className="flex items-center gap-2">
                                             <div className="w-5 h-5 text-green-400" />
                                             <span className="text-sm font-semibold text-slate-200">
-                                                {BANK1.bankName} Bank
+                                                {BANK1.CARD.bankName} Bank
                                             </span>
                                         </div>
                                         <div className="absolute -top-0.5 right-4">
@@ -59,7 +59,7 @@ export default function FDComparison() {
                                         <div className="flex items-center gap-2">
                                             <div className="w-5 h-5 text-slate-400" />
                                             <span className="text-sm font-semibold text-slate-300">
-                                                {BANK2.bankName} Bank
+                                                {BANK2.CARD.bankName} Bank
                                             </span>
                                         </div>
                                     </th>
@@ -110,12 +110,14 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <span className="text-lg font-semibold text-slate-400">
-                                            ₹ {BANK1.features.minimumAmount}
+                                            ₹{" "}
+                                            {BANK1.CARD.features.minimumAmount}
                                         </span>
                                     </td>
                                     <td className="px-6 py-5">
                                         <span className="text-lg font-medium text-slate-400">
-                                            ₹ {BANK2.features.minimumAmount}
+                                            ₹{" "}
+                                            {BANK2.CARD.features.minimumAmount}
                                         </span>
                                     </td>
                                 </tr>
@@ -125,7 +127,8 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            {BANK1.features.instantBooking ? (
+                                            {BANK1.CARD.features
+                                                .instantBooking ? (
                                                 <>
                                                     <CheckCircleIcon className="w-6 h-6 text-green-400" />
                                                     <span className="text-sm font-medium text-green-400">
@@ -144,7 +147,8 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            {BANK2.features.instantBooking ? (
+                                            {BANK2.CARD.features
+                                                .instantBooking ? (
                                                 <>
                                                     <CheckCircleIcon className="w-6 h-6 text-green-400" />
                                                     <span className="text-sm font-medium text-green-400">
@@ -168,7 +172,8 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            {BANK1.features.accountRequired ? (
+                                            {BANK1.CARD.features
+                                                .accountRequired ? (
                                                 <>
                                                     <CheckCircleIcon className="w-6 h-6 text-green-400" />
                                                     <span className="text-sm font-medium text-green-400">
@@ -187,7 +192,8 @@ export default function FDComparison() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
-                                            {BANK2.features.accountRequired ? (
+                                            {BANK2.CARD.features
+                                                .accountRequired ? (
                                                 <>
                                                     <CheckCircleIcon className="w-6 h-6 text-green-400" />
                                                     <span className="text-sm font-medium text-green-400">
