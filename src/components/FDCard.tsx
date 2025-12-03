@@ -41,7 +41,7 @@ export default function FDCard() {
         },
     ];
     return (
-        <div className=" flex items-center justify-center p-8">
+        <div className="flex items-center justify-center p-8">
             <div className="w-full max-w-4xl">
                 <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-800/50 overflow-hidden">
                     <div className="bg-linear-to-r from-slate-800/50 to-slate-900/50 px-8 py-8 border-b border-slate-800/50">

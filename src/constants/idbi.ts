@@ -7,7 +7,7 @@ const CARD = {
     features: {
         interestRates: { min: 3.0, max: 7.05 },
         timePeriod: "7 days - 10 Years",
-        minimumAmount: 5000,
+        minimumAmount: 1000,
         compounding: "QUARTERLY",
         instantBooking: true,
         accountRequired: true,
@@ -96,6 +96,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const IDBI = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "The IDBI FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in IDBI is Rs 1000 with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra IDBI FD interest rates for an amount exceeding Rs.10,000.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate at source if Form 15G/15H is not submitted.",
+];
+
+const IDBI = { CARD, RATES, SCHEMES, FEATURES };
 
 export { IDBI };

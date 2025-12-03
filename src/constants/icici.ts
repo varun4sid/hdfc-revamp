@@ -86,6 +86,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const ICICI = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "ICICI FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in ICICI is Rs 10,000, with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra ICICI FD interest rate.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate if Form 15G/15H is not submitted.",
+];
+
+const ICICI = { CARD, RATES, SCHEMES, FEATURES };
 
 export { ICICI };

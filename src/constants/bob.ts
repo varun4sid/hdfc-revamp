@@ -7,7 +7,7 @@ const CARD = {
     features: {
         interestRates: { min: 3.5, max: 7.0 },
         timePeriod: "7 days - 10 Years",
-        minimumAmount: 5000,
+        minimumAmount: 10000,
         compounding: "QUARTERLY",
         instantBooking: true,
         accountRequired: true,
@@ -91,6 +91,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const BOB = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "Bank of Baroda FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in Bank of Baroda is Rs 10,000 with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra Bank of Baroda FD interest rates.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate at source if Form 15G/15H is not submitted.",
+];
+
+const BOB = { CARD, RATES, SCHEMES, FEATURES };
 
 export { BOB };

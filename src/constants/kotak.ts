@@ -111,6 +111,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const KOTAK = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "Kotak FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in Kotak is Rs 5000 with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra Kotak FD interest rates.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate at source if Form 15G/15H is not submitted.",
+];
+
+const KOTAK = { CARD, RATES, SCHEMES, FEATURES };
 
 export { KOTAK };

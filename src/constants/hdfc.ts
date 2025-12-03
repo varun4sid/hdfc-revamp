@@ -111,6 +111,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const HDFC = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "HDFC FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in HDFC is Rs 5000.",
+    "Senior citizens can avail of a 0.50% extra HDFC FD interest rate.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate if Form 15G/15H is not submitted.",
+];
+
+const HDFC = { CARD, RATES, SCHEMES, FEATURES };
 
 export { HDFC };

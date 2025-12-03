@@ -86,6 +86,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const SBI = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "The SBI FD tenures range from 7 days to 10 years.",
+    "The minimum deposit amount needed to open an FD in SBI is Rs 1000 with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra SBI FD interest rates for an amount exceeding Rs.10,000.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS is deducted at the prevalent rate at source if Form 15G/15H is not submitted.",
+];
+
+const SBI = { CARD, RATES, SCHEMES, FEATURES };
 
 export { SBI };

@@ -7,7 +7,7 @@ const CARD = {
     features: {
         interestRates: { min: 3.0, max: 7.9 },
         timePeriod: "7 days - 10 Years",
-        minimumAmount: 5000,
+        minimumAmount: 10000,
         compounding: "QUARTERLY",
         instantBooking: true,
         accountRequired: true,
@@ -111,6 +111,14 @@ const SCHEMES: Scheme[] = [
     },
 ];
 
-const INDUSIND = { CARD, RATES, SCHEMES };
+const FEATURES = [
+    "IndusInd FD provides flexible tenures ranging from 7 days to 60 months and beyond.",
+    "The minimum deposit amount needed to open an FD in IndusInd is Rs 10,000 with no limit on the maximum deposit.",
+    "Senior citizens can avail of a 0.50% extra IndusInd FD interest rates.",
+    "Auto-renewal facility is available on the deposit, on maturity.",
+    "TDS deducted at the standard rate if applicable forms are not provided.",
+];
+
+const INDUSIND = { CARD, RATES, SCHEMES, FEATURES };
 
 export { INDUSIND };
