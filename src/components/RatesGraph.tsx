@@ -1,4 +1,4 @@
-import { SBI as BANK } from "../constants/sbi";
+import { HDFC as BANK } from "../constants/hdfc";
 
 import {
     LineChart,
